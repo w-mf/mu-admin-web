@@ -13,7 +13,10 @@
         </HeaderInfo>
       </ElHeader>
       <ElMain class="main__wrap">
-        <router-view />
+        <el-scrollbar view-class="main__content">
+          <PageNav />
+          <router-view />
+        </el-scrollbar>
       </ElMain>
     </ElContainer>
   </ElContainer>
@@ -21,8 +24,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { Expand, Fold } from '@element-plus/icons';
-import AsideMenu from '~/components/AsideMenu/index.vue';
-import HeaderInfo from '~/components/HeaderInfo/index.vue';
+import AsideMenu from './AsideMenu.vue';
+import HeaderInfo from './HeaderInfo.vue';
+import PageNav from './PageNav.vue';
 
 const isExpandMenu = ref<boolean>(true);
 
@@ -43,13 +47,19 @@ const expandChange = () => {
 }
 .header__wrap {
   background: #fff;
+  position: relative;
+  z-index: 2;
+  @include basicShadow();
   .header__expandbtn {
     cursor: pointer;
   }
 }
 .main__wrap {
-  padding: 0;
-  margin: 10px;
-  background: #fff;
+  --el-main-padding: 0;
+  display: flex;
+  flex-direction: column;
+  .main__content {
+    padding: 0 $mainPadding $mainPadding;
+  }
 }
 </style>

@@ -13,7 +13,7 @@ import { ref } from 'vue';
 
 const img = ref();
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .header-info {
   display: flex;
   align-items: center;

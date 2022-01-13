@@ -1,7 +1,11 @@
-@mixin basicShadow {
+@mixin basicShadow() {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
-@mixin lightShadow {
+@mixin lightShadow() {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  color: #fff;
+}
+@mixin textEllipsis() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

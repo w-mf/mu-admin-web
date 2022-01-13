@@ -1,11 +1,11 @@
 <template>
-  <router-view />
+  <div>33</div>
 </template>
+
 <script setup lang="ts">
 import { onMounted } from 'vue';
 
 onMounted(() => {});
 </script>
-<style lang="scss">
-@import '~/styles/common.scss';
-</style>
+
+<style scoped lang="scss"></style>
