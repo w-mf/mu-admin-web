@@ -12,9 +12,9 @@ onMounted(() => {});
 
 <style scoped lang="scss">
 @import '~/styles/variable.scss';
+
 .body-container__wrap {
-  flex: 1 1 auto;
-  background: #fff;
-  padding: 10px 16px;
+  flex: 1;
+  padding: 0 16px 10px;
 }
 </style>

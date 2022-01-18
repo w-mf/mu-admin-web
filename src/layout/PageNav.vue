@@ -1,5 +1,5 @@
 <template>
-  <ElBreadcrumb class="page-nav">
+  <ElBreadcrumb id="pageNav" class="page-nav">
     <template v-for="item of routeMatched" :key="item.path">
       <ElBreadcrumbItem
         v-if="!['/home'].includes(item.path)"
@@ -22,9 +22,11 @@ const routeMatched = computed(() => route.matched);
 <style scoped lang="scss">
 @import '~/styles/mixin.scss';
 @import '~/styles/variable.scss';
+
 .page-nav {
-  height: 44px;
-  line-height: 44px;
-  flex: 0 0 44px;
+  height: $page-nav-height;
+  line-height: $page-nav-height;
+  flex: 0 0 $page-nav-height;
+  padding: 0 20px;
 }
 </style>

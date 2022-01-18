@@ -19,6 +19,7 @@ const img = ref();
   align-items: center;
   justify-content: space-between;
   height: 100%;
+
   .header-info_user {
     img {
       width: 30px;

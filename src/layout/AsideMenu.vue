@@ -79,24 +79,30 @@ const menuList = computed(() =>
 
 <style lang="scss">
 @import '../styles/variable.scss';
+
 .aside-menu {
   .logo__wrap {
     padding: 20px;
-    transition: all $asideMenuLogoTransitionTime;
+    transition: all $aside-menu-logo-transition-time;
+
     img {
       height: 40px;
-      transition: all $asideMenuLogoTransitionTime;
+      transition: all $aside-menu-logo-transition-time;
     }
+
     &.logo__size--small {
       padding: 15px;
+
       img {
         height: 30px;
       }
     }
   }
+
   .el-menu {
     --el-menu-text-color: #fff;
   }
+
   .el-menu--vertical {
     .el-menu-item {
       color: var(--el-text-color-primary);

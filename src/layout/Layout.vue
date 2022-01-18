@@ -12,18 +12,16 @@
           </ElIcon>
         </HeaderInfo>
       </ElHeader>
-      <ElMain class="main__wrap">
-        <el-scrollbar view-class="main__content">
-          <PageNav />
-          <router-view />
-        </el-scrollbar>
+      <ElMain id="mainContainer" class="main__wrap">
+        <PageNav />
+        <router-view />
       </ElMain>
     </ElContainer>
   </ElContainer>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Expand, Fold } from '@element-plus/icons';
+import { Expand, Fold } from '@element-plus/icons-vue';
 import AsideMenu from './AsideMenu.vue';
 import HeaderInfo from './HeaderInfo.vue';
 import PageNav from './PageNav.vue';
@@ -39,27 +37,29 @@ const expandChange = () => {
 @import '../styles/variable.scss';
 
 .aside-menu__wrap {
-  background-color: $asideMenuBgColor;
-  transition: all $asideMenuLogoTransitionTime;
+  background-color: $aside-menu-bg-color;
+  transition: all $aside-menu-logo-transition-time;
+
   &.aside-menu--fold {
     width: 60px;
   }
 }
+
 .header__wrap {
   background: #fff;
   position: relative;
   z-index: 2;
-  @include basicShadow();
+  @include shadow-mixin(3, 'down');
+
   .header__expandbtn {
     cursor: pointer;
   }
 }
+
 .main__wrap {
   --el-main-padding: 0;
+
   display: flex;
   flex-direction: column;
-  .main__content {
-    padding: 0 $mainPadding $mainPadding;
-  }
 }
 </style>
