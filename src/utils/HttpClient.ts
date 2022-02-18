@@ -8,37 +8,45 @@ const apiModel = ((import.meta.env.DEV && import.meta.env.VITE_API_MODEL) ||
   'local') as ApiModelType;
 
 const yttHttpClientInstance = axios.create({
-  baseURL: apiModel === 'mock' ? '' : '/api',
+  // baseURL: apiModel === 'mock' ? '' : '/api',
   timeout: 10000,
 });
 // 请求拦截器
-// yttHttpClientInstance.interceptors.request.use(
-//   (config) => {
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   },
-// );
+yttHttpClientInstance.interceptors.request.use(
+  (config) => {
+    const cfg = config;
+    if (cfg.headers) cfg.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    return cfg;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 // 响应拦截器
 yttHttpClientInstance.interceptors.response.use(
   (response) => {
-    const res = response.data;
-    switch (res.code) {
-      case 200: // 成功
-        return res.data;
-      case 1001: // 登录失效 等异常请求
-        window.location.href = '/#/user/login';
-        break;
-      default:
-        ElMessage.error(res.msg || '抱歉，服务出错了！');
-    }
-    return res.data || {};
+    return Promise.resolve(response.data);
   },
   (error: AxiosError) => {
-    ElMessage.error(`${error.response?.status} 服务出错了，请稍后重试`);
-    return {};
+    const { response } = error;
+    switch (response?.status) {
+      case 401: // 登录失效 等异常请求
+        ElMessage.error({
+          message: `登录失效，请重新登录`,
+          duration: 2000,
+          onClose: () => {
+            window.location.href = '/login';
+          },
+        });
+        break;
+      case 400: // 验证失败
+        // 走默认的 return，不提示
+        break;
+      default:
+        ElMessage.error(`${error.response?.status} 服务出错了，请稍后重试`);
+    }
+    return Promise.reject(response?.data);
   },
 );
 

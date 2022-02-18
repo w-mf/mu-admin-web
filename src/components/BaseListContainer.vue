@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, defineProps, withDefaults, defineEmits } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { debounce } from 'lodash';
 
 interface IColOption {

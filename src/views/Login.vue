@@ -1,11 +1,48 @@
 <template>
-  <div>login</div>
+  <div style="width: 300px">
+    <ElInput v-model="form.userName" placeholder="用户名" /><br />
+    <ElInput v-model="form.password" placeholder="密码" type="password" />
+    <br />
+    <ElButton @click="loginHandle">登录</ElButton>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
 
-onMounted(() => {});
+import { ApiAuthEncryptionPost, ApiAuthLoginPost } from '~/api/Auth';
+
+const router = useRouter();
+const form = reactive({
+  userName: '',
+  password: '',
+});
+
+async function loginHandle() {
+  if (!form.userName || !form.password) {
+    ElMessage.error('请填写用户名及密码');
+    return;
+  }
+  let encryptionPassword = '';
+  try {
+    encryptionPassword = await ApiAuthEncryptionPost({ str: form.password });
+  } catch (e) {
+    ElMessage.error('服务出错，请重试');
+  }
+  try {
+    const { accessToken } = await ApiAuthLoginPost({
+      userName: form.userName,
+      password: encryptionPassword,
+    });
+    ElMessage.success({ message: '登录成功', duration: 1000 });
+    localStorage.setItem('token', accessToken);
+    await router.push('/home');
+  } catch (e) {
+    ElMessage.error('账户或密码错误');
+  }
+}
 </script>
 
 <style scoped lang="scss"></style>

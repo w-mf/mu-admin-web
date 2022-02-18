@@ -18,7 +18,7 @@
             :index="item.path"
           >
             <el-icon v-if="item.meta && item.meta.icon">
-              <component :is="(Icon as any)[item.meta.icon as any]" />
+              <component :is="Icon[item.meta.icon]" />
             </el-icon>
             <span>{{ item.meta && item.meta.title }}</span>
           </ElMenuItem>
@@ -26,7 +26,7 @@
           <ElSubMenu v-else-if="item.meta && item.meta.isMenu" :index="item.path">
             <template #title>
               <el-icon v-if="item.meta && item.meta.icon">
-                <component :is="(Icon as any)[item.meta.icon as any]" />
+                <component :is="Icon[item.meta.icon]" />
               </el-icon>
               <span>{{ item.meta && item.meta.title }}</span>
             </template>
@@ -37,7 +37,7 @@
                 :index="itemB.path"
               >
                 <el-icon v-if="itemB.meta && itemB.meta.icon">
-                  <component :is="(Icon as any)[itemB.meta.icon as any]" />
+                  <component :is="Icon[itemB.meta.icon]" />
                 </el-icon>
                 <span>{{ itemB.meta && itemB.meta.title }}</span>
               </ElMenuItem>
@@ -50,13 +50,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, withDefaults } from 'vue';
+import { computed } from 'vue';
 import logoExpand from '~/assets/images/logo-expand.png';
 import logoFold from '~/assets/images/logo-fold.png';
 
 import * as Icon from '@element-plus/icons-vue';
-import { routes } from '~/routers';
+import { dynamicRoutes, IRoute } from '~/routers';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const props = withDefaults(
   defineProps<{
     expand: boolean;
@@ -65,16 +67,23 @@ const props = withDefaults(
     expand: true,
   },
 );
-const menuList = computed(() =>
-  routes
-    .filter((item) => item.meta?.isMenu)
+function routeHandle(routers: IRoute[]): IRoute[] {
+  // meta.isMenu = true 并且权限码和后端返回的匹配上才显示
+  return routers
+    .filter(
+      (item) =>
+        item.meta?.isMenu &&
+        item.meta?.permissionCode &&
+        // 首页默认显示
+        store.state.permissionCodes.concat(['home']).includes(item.meta.permissionCode),
+    )
     .map((item) => {
-      return {
-        ...item,
-        children: item.children ? item.children.filter((i) => i.meta?.isMenu) : undefined,
-      };
-    }),
-);
+      if (item.children)
+        return { ...item, children: routeHandle(item.children as typeof dynamicRoutes) };
+      return item;
+    });
+}
+const menuList = computed(() => routeHandle(dynamicRoutes));
 </script>
 
 <style lang="scss">

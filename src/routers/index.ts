@@ -1,14 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import type { RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
+export type IRoute = RouteRecordRaw & {
+  meta: {
+    isMenu?: boolean;
+    permissionCode: string;
+    icon?: string;
+    title: string;
+  };
+  children?: IRoute[];
+};
 const ListContainer = () => import('~/layout/BodyContainer.vue');
-// 主要路由
-export const routes: RouteRecordRaw[] = [
+// 根据后端返回的权限码匹配的路由
+export const dynamicRoutes: IRoute[] = [
   {
     path: '/home',
     component: () => import('~/views/Home.vue'),
     meta: {
       isMenu: true,
+      permissionCode: 'home',
       icon: 'HomeFilled',
       title: '首页',
     },
@@ -19,6 +28,7 @@ export const routes: RouteRecordRaw[] = [
     redirect: '/system/role',
     meta: {
       isMenu: true,
+      permissionCode: 'system',
       icon: 'Avatar',
       title: '系统管理',
     },
@@ -28,15 +38,17 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('~/views/System/RoleList.vue'),
         meta: {
           isMenu: true,
+          permissionCode: 'system:role',
           title: '角色管理',
         },
       },
       {
-        path: '/system/permission',
-        component: () => import('~/views/System/Permission.vue'),
+        path: '/system/menu',
+        component: () => import('~/views/System/UserList.vue'),
         meta: {
           isMenu: true,
-          title: '权限管理',
+          permissionCode: 'system:menu',
+          title: '菜单管理',
         },
       },
       {
@@ -44,6 +56,7 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('~/views/System/UserList.vue'),
         meta: {
           isMenu: true,
+          permissionCode: 'system:account',
           title: '用户管理',
         },
       },
@@ -57,11 +70,7 @@ const router = createRouter({
       path: '/',
       component: () => import('~/layout/Layout.vue'),
       redirect: '/home',
-      meta: {
-        isMenu: true,
-        title: '首页',
-      },
-      children: routes,
+      children: dynamicRoutes,
     },
     {
       path: '/login',

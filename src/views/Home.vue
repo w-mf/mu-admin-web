@@ -25,9 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted } from 'vue';
+import { onMounted } from 'vue';
+import { ApiSystemMenuListGet } from '~/api/SysMenu';
 
-onUnmounted(() => {});
+onMounted(async () => {
+  const menuTree = await ApiSystemMenuListGet();
+  console.log(menuTree);
+});
 </script>
 
 <style scoped lang="scss"></style>

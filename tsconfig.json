@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     "lib": ["esnext", "dom"],
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["./src/*"]
     },
     "types": ["./node_modules/vite/client", "./node_modules/element-plus/global"]
   },

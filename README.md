@@ -143,3 +143,6 @@ git commit -m 'style: eslint 修复'
 git commit -m 'chore(package.json): 升级xxx依赖版本'
 ...
 ```
+
+# 其他
+  Vue3.2后 Script Setup 语法引入了 defineProps、defineEmits、defineExpose、withDefaults 的编译器宏，无需手动引入
