@@ -44,7 +44,9 @@ yttHttpClientInstance.interceptors.response.use(
         // 走默认的 return，不提示
         break;
       default:
-        ElMessage.error(`${error.response?.status} 服务出错了，请稍后重试`);
+        ElMessage.error(
+          error.response?.data?.message || `${error.response?.status} 服务出错了，请稍后重试`,
+        );
     }
     return Promise.reject(response?.data);
   },

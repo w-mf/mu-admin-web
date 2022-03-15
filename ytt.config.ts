@@ -32,7 +32,7 @@ export default defineConfig([
     // 输出文件路径。 path.split('/')[0]
     outputFilePath: (interfaceInfo: Interface, changeCase: ChangeCase) => {
       const catName = interfaceInfo._category.name as any;
-      const fileName = fileNameMap[catName];
+      const fileName = fileNameMap[catName] || 'index';
 
       return `src/api/${changeCase.pascalCase(fileName)}.ts`;
     },
@@ -44,7 +44,7 @@ export default defineConfig([
         categories: [
           {
             // 分类id。 0 全部，id前面加负号表示排除
-            id: [0],
+            id: [0, -190],
             // 请求函数的名称。 除 path.split('/')[0] 之外的path
             getRequestFunctionName(interfaceInfo, changeCase) {
               const path = interfaceInfo.path.replace('{', '').replace('}', '');

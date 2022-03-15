@@ -3,7 +3,7 @@ import { createStore } from 'vuex';
 const store = createStore<{ permissionCodes: string[] }>({
   state() {
     return {
-      permissionCodes: ['system'],
+      permissionCodes: JSON.parse(localStorage.getItem('permissions') || '[]'),
     };
   },
   mutations: {
@@ -13,6 +13,7 @@ const store = createStore<{ permissionCodes: string[] }>({
   },
   actions: {
     setPermissionCodes(context, val) {
+      localStorage.setItem('permissions', JSON.stringify(val));
       context.commit('SET_PERMISSION_CODES', val);
     },
   },

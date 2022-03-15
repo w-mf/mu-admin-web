@@ -28,7 +28,7 @@ export const dynamicRoutes: IRoute[] = [
     redirect: '/system/role',
     meta: {
       isMenu: true,
-      permissionCode: 'system',
+      permissionCode: 'sys',
       icon: 'Avatar',
       title: '系统管理',
     },
@@ -38,16 +38,16 @@ export const dynamicRoutes: IRoute[] = [
         component: () => import('~/views/System/RoleList.vue'),
         meta: {
           isMenu: true,
-          permissionCode: 'system:role',
+          permissionCode: 'sys:role',
           title: '角色管理',
         },
       },
       {
         path: '/system/menu',
-        component: () => import('~/views/System/UserList.vue'),
+        component: () => import('~/views/System/Menu/List.vue'),
         meta: {
           isMenu: true,
-          permissionCode: 'system:menu',
+          permissionCode: 'sys:menu',
           title: '菜单管理',
         },
       },
@@ -56,7 +56,7 @@ export const dynamicRoutes: IRoute[] = [
         component: () => import('~/views/System/UserList.vue'),
         meta: {
           isMenu: true,
-          permissionCode: 'system:account',
+          permissionCode: 'sys:account',
           title: '用户管理',
         },
       },

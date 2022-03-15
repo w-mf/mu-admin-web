@@ -8,18 +8,35 @@
       :data="props.listData"
       stripe
       class="base-list-container__table"
+      row-key="id"
       :height="tableHeight"
     >
       <template #empty><ElEmpty description="暂无数据" /></template>
       <ElTableColumn
-        v-for="item of props.colOptions"
-        :key="item.field"
+        v-for="(item, index) of props.colOptions"
+        :key="item.field || index"
+        v-slot="{ row }"
         :prop="item.field"
         :label="item.title"
         :width="item.width"
-      />
+      >
+        <template v-if="item.field">
+          {{ item.formatter ? item.formatter(row[item.field]) : row[item.field] }}
+        </template>
+        <template v-for="(i, idx) of item.items" v-else>
+          <ElButton
+            v-if="i.type === 'button'"
+            :key="idx"
+            type="text"
+            v-bind="i.opts"
+            @click="i.onClick && i.onClick(row)"
+          >
+            {{ i.label }}
+          </ElButton>
+        </template>
+      </ElTableColumn>
     </ElTable>
-    <div ref="PaginationRef" class="base-list-container__pagination">
+    <div v-if="props.isPage" ref="PaginationRef" class="base-list-container__pagination">
       <ElPagination
         background
         layout="prev, pager, next, sizes, total"
@@ -35,23 +52,33 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { debounce } from 'lodash';
+import type { ElTableColumn } from 'element-plus';
 
-interface IColOption {
-  field: string;
+export interface IColOption<T> {
+  field?: string;
   title: string;
   width?: string | number;
+  formatter?: (val: string | number) => string | undefined;
+  items?: Array<{
+    type: 'button';
+    label: string;
+    opts?: unknown;
+    onClick?: (val: T) => void;
+  }>;
 }
-interface IPage {
+export interface IPage {
   pageNo: number;
   pageSize: number;
   total: number;
 }
 const props = withDefaults(
   defineProps<{
-    colOptions: IColOption[];
-    listData: any[];
-    page: IPage;
+    colOptions: IColOption<unknown>[];
+    listData: unknown[];
+    page?: IPage;
+    isPage?: boolean;
   }>(),
   {
     colOptions: () => [],
@@ -61,6 +88,7 @@ const props = withDefaults(
       pageSize: 10,
       total: 0,
     }),
+    isPage: true,
   },
 );
 const emit = defineEmits<{
@@ -98,8 +126,8 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss">
-@import '~/styles/variable.scss';
-@import '~/styles/mixin.scss';
+@import '../styles/variable.scss';
+@import '../styles/mixin.scss';
 
 .base-list-container {
   display: flex;

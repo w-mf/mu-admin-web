@@ -8,9 +8,9 @@ module.exports = {
     'vue/setup-compiler-macros': true,
   },
   extends: [
-    'plugin:import/typescript',
     'plugin:vue/vue3-recommended',
     '@vue/airbnb',
+    'plugin:import/typescript',
     '@vue/typescript/recommended',
     '@vue/prettier',
   ],
@@ -32,5 +32,8 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'import/no-extraneous-dependencies': ['error', { devDependencies: ['./vite.config.ts'] }],
+    'import/prefer-default-export': 'off',
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
   },
 };

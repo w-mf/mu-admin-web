@@ -50,13 +50,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import logoExpand from '~/assets/images/logo-expand.png';
 import logoFold from '~/assets/images/logo-fold.png';
 
 import * as Icon from '@element-plus/icons-vue';
 import { dynamicRoutes, IRoute } from '~/routers';
 import { useStore } from 'vuex';
+
+import { ApiSystemAccountGetPermissionsGet } from '~/api/SysAcctount';
 
 const store = useStore();
 const props = withDefaults(
@@ -84,6 +86,10 @@ function routeHandle(routers: IRoute[]): IRoute[] {
     });
 }
 const menuList = computed(() => routeHandle(dynamicRoutes));
+
+onMounted(() => {
+  ApiSystemAccountGetPermissionsGet().then((res) => store.dispatch('setPermissionCodes', res));
+});
 </script>
 
 <style lang="scss">

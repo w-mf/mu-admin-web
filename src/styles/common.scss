@@ -1,11 +1,10 @@
 @import './mixin.scss';
-
 /* stylelint-disable-next-line selector-max-id */
 #app,
 html,
 body {
   height: 100%;
-  min-height: 360px;
+  min-height: 500px;
 }
 
 body {
@@ -31,4 +30,15 @@ li {
       @include shadow-mixin($lv, $item);
     }
   }
+}
+
+.dialog-not-footer{
+  .el-dialog__footer{
+    display: none;
+  }
+}
+.dialog-form{
+  padding-right: 30px;
+  padding-bottom: 0;
+  width: 400px;
 }
