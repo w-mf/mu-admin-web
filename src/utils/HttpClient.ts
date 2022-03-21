@@ -4,8 +4,7 @@ import type { RequestFunctionParams } from 'yapi-to-typescript';
 
 type ApiModelType = 'local' | 'test' | 'prod' | 'mock';
 // 开发环境才使用apiModel
-const apiModel = ((import.meta.env.DEV && import.meta.env.VITE_API_MODEL) ||
-  'local') as ApiModelType;
+const apiModel = ((import.meta.env.DEV && import.meta.env.VITE_API_MODEL) || 'local') as ApiModelType;
 
 const yttHttpClientInstance = axios.create({
   // baseURL: apiModel === 'mock' ? '' : '/api',
@@ -44,17 +43,13 @@ yttHttpClientInstance.interceptors.response.use(
         // 走默认的 return，不提示
         break;
       default:
-        ElMessage.error(
-          error.response?.data?.message || `${error.response?.status} 服务出错了，请稍后重试`,
-        );
+        ElMessage.error(error.response?.data?.message || `${error.response?.status} 服务出错了，请稍后重试`);
     }
     return Promise.reject(response?.data);
   },
 );
 
-export default async function HttpClient<TResponseData>(
-  payload: RequestFunctionParams,
-): Promise<TResponseData> {
+export default async function HttpClient<TResponseData>(payload: RequestFunctionParams): Promise<TResponseData> {
   const { path: url, method, requestHeaders: headers, data } = payload;
   const { baseURL } = yttHttpClientInstance.defaults;
   // api 模式映射baseUrl地址,devUrl和prodUrl在yapi上配置

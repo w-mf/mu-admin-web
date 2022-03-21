@@ -35,10 +35,10 @@ export const dynamicRoutes: IRoute[] = [
     children: [
       {
         path: '/system/role',
-        component: () => import('~/views/System/RoleList.vue'),
+        component: () => import('~/views/System/Role/List.vue'),
         meta: {
           isMenu: true,
-          permissionCode: 'sys:role',
+          permissionCode: 'sys:role:list',
           title: '角色管理',
         },
       },
@@ -47,16 +47,16 @@ export const dynamicRoutes: IRoute[] = [
         component: () => import('~/views/System/Menu/List.vue'),
         meta: {
           isMenu: true,
-          permissionCode: 'sys:menu',
+          permissionCode: 'sys:menu:list',
           title: '菜单管理',
         },
       },
       {
-        path: '/system/user',
-        component: () => import('~/views/System/UserList.vue'),
+        path: '/system/account',
+        component: () => import('~/views/System/Account/List.vue'),
         meta: {
           isMenu: true,
-          permissionCode: 'sys:account',
+          permissionCode: 'sys:account:list',
           title: '用户管理',
         },
       },

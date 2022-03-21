@@ -3,39 +3,37 @@
     <div ref="SearchRef" class="base-list-container__search">
       <slot />
     </div>
-    <ElTable
-      :key="timestamp"
-      :data="props.listData"
-      stripe
-      class="base-list-container__table"
-      row-key="id"
-      :height="tableHeight"
-    >
-      <template #empty><ElEmpty description="暂无数据" /></template>
-      <ElTableColumn
-        v-for="(item, index) of props.colOptions"
-        :key="item.field || index"
-        v-slot="{ row }"
-        :prop="item.field"
-        :label="item.title"
-        :width="item.width"
-      >
-        <template v-if="item.field">
-          {{ item.formatter ? item.formatter(row[item.field]) : row[item.field] }}
-        </template>
-        <template v-for="(i, idx) of item.items" v-else>
-          <ElButton
-            v-if="i.type === 'button'"
-            :key="idx"
-            type="text"
-            v-bind="i.opts"
-            @click="i.onClick && i.onClick(row)"
-          >
-            {{ i.label }}
-          </ElButton>
-        </template>
-      </ElTableColumn>
-    </ElTable>
+    <div class="base-list-container__table">
+      <ElTable :key="timestamp" :data="props.listData" stripe row-key="id" :height="tableHeight">
+        <template #empty><ElEmpty description="暂无数据" /></template>
+        <ElTableColumn
+          v-for="(item, index) of props.colOptions"
+          :key="item.field || index"
+          v-slot="{ row }"
+          :prop="item.field"
+          :label="item.title"
+          :width="item.width"
+        >
+          <template v-if="item.field">
+            <template v-if="(item.formatter && item.formatter(row[item.field])) || row[item.field]">
+              {{ item.formatter ? item.formatter(row[item.field]) : row[item.field] }}
+            </template>
+            <div v-else class="base-list-container__table_cell_empty">-</div>
+          </template>
+          <template v-for="(i, idx) of item.items" v-else>
+            <ElButton
+              v-if="i.type === 'button'"
+              :key="idx"
+              type="text"
+              v-bind="i.opts"
+              @click="i.onClick && i.onClick(row)"
+            >
+              {{ i.label }}
+            </ElButton>
+          </template>
+        </ElTableColumn>
+      </ElTable>
+    </div>
     <div v-if="props.isPage" ref="PaginationRef" class="base-list-container__pagination">
       <ElPagination
         background
@@ -134,21 +132,21 @@ onUnmounted(() => {
   flex-direction: column;
   height: 100%;
   background: #fff;
+  padding: 0 20px;
 
   .base-list-container__search {
     flex: 0 0 auto;
-    padding: 20px;
-    @include shadow-mixin(3, 'down');
+    padding: 20px 0;
   }
-
   .base-list-container__table {
-    // flex: 1;
-    padding: 0 15px;
+    flex: 1;
+    .base-list-container__table_cell_empty {
+      color: $secondaty-text;
+    }
   }
-
   .base-list-container__pagination {
     flex: 0 0 auto;
-    padding: 20px 5px;
+    padding: 20px 0;
   }
 }
 </style>

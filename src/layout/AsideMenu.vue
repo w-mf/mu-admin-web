@@ -4,13 +4,7 @@
       <img alt="logo" :src="props.expand ? logoExpand : logoFold" />
     </div>
     <div>
-      <ElMenu
-        router
-        default-active="/home"
-        class="not-border"
-        background-color="transparent"
-        :collapse="!expand"
-      >
+      <ElMenu router default-active="/home" class="not-border" background-color="transparent" :collapse="!expand">
         <template v-for="(item, index) of menuList" :key="index">
           <!-- 一级 -->
           <ElMenuItem
@@ -31,11 +25,7 @@
               <span>{{ item.meta && item.meta.title }}</span>
             </template>
             <template v-for="(itemB, indexB) of item.children">
-              <ElMenuItem
-                v-if="itemB.meta && itemB.meta.isMenu"
-                :key="index + '_' + indexB"
-                :index="itemB.path"
-              >
+              <ElMenuItem v-if="itemB.meta && itemB.meta.isMenu" :key="index + '_' + indexB" :index="itemB.path">
                 <el-icon v-if="itemB.meta && itemB.meta.icon">
                   <component :is="Icon[itemB.meta.icon]" />
                 </el-icon>
@@ -58,7 +48,7 @@ import * as Icon from '@element-plus/icons-vue';
 import { dynamicRoutes, IRoute } from '~/routers';
 import { useStore } from 'vuex';
 
-import { ApiSystemAccountGetPermissionsGet } from '~/api/SysAcctount';
+import { ApiSystemAccountGetPermissionsGet } from '~/api/SysAccount';
 
 const store = useStore();
 const props = withDefaults(
@@ -80,8 +70,7 @@ function routeHandle(routers: IRoute[]): IRoute[] {
         store.state.permissionCodes.concat(['home']).includes(item.meta.permissionCode),
     )
     .map((item) => {
-      if (item.children)
-        return { ...item, children: routeHandle(item.children as typeof dynamicRoutes) };
+      if (item.children) return { ...item, children: routeHandle(item.children as typeof dynamicRoutes) };
       return item;
     });
 }

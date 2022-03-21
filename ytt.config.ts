@@ -7,7 +7,7 @@ const yapiConfig = {
 const fileNameMap: any = {
   auth: 'auth',
   '系统管理-菜单': 'SysMenu',
-  '系统管理-用户': 'SysAcctount',
+  '系统管理-用户': 'SysAccount',
   '系统管理-角色': 'SysRole',
 };
 // 配置详情。 https://fjc0k.github.io/yapi-to-typescript/handbook/config.html

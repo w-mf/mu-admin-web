@@ -1,5 +1,5 @@
 <template>
-  <BaseListContainer :list-data="treeData" :is-page="false" :col-options="colOptions">
+  <BaseListContainer :list-data="listData" :page="pageParams" :col-options="colOptions">
     <div>
       <ElButton type="primary" @click="showDialog = true">新增</ElButton>
     </div>
@@ -21,28 +21,30 @@
 import { onMounted, ref, reactive } from 'vue';
 import BaseListContainer, { IColOption } from '~/components/BaseListContainer.vue';
 import {
-  ApiSystemMenuTreeListGet,
-  ApiSystemMenuIdDelete,
-  ApiSystemMenuTreeListGetResponse,
-  ApiSystemMenuPostRequest,
-  ApiSystemMenuPost,
-  ApiSystemMenuIdPatch,
-} from '~/api/SysMenu';
+  ApiSystemRoleGetResponse,
+  ApiSystemRoleGet,
+  ApiSystemRolePostRequest,
+  ApiSystemRoleIdPatch,
+  ApiSystemRolePost,
+  ApiSystemRoleIdDelete,
+} from '~/api/SysRole';
 import dayjs from 'dayjs';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import DialogFormContents from './DialogFormContents.vue';
 
-const treeData = ref<ApiSystemMenuTreeListGetResponse>([]);
+type ListItem = ApiSystemRoleGetResponse['list'][number];
+
+const listData = ref<ListItem[]>([]);
+const pageParams = reactive<Omit<ApiSystemRoleGetResponse, 'list'>>({
+  pageNo: 1,
+  pageSize: 20,
+  total: 0,
+});
 async function getData() {
-  const res = await ApiSystemMenuTreeListGet();
-  const sortHandle = (list: ApiSystemMenuTreeListGetResponse) => {
-    list.sort((a, b) => (a.sort || 0) - (b.sort || 0));
-    list.forEach((item) => {
-      if (item.children) sortHandle(item.children);
-    });
-  };
-  sortHandle(res);
-  treeData.value = res;
+  const { pageNo, pageSize } = pageParams;
+  const res = await ApiSystemRoleGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}` });
+  listData.value = res.list || [];
+  pageParams.total = res.total;
 }
 
 const editId = ref<number | undefined>(); // 编辑情况下 列表项的id。用于编辑状态判断、请求
@@ -51,56 +53,48 @@ function closeDialog() {
   editId.value = undefined;
   showDialog.value = false;
 }
-async function submitHandle(data: ApiSystemMenuPostRequest) {
+async function submitHandle(data: ApiSystemRolePostRequest) {
   console.log(data);
   if (editId.value) {
-    await ApiSystemMenuIdPatch({ id: `${editId.value}`, ...data });
+    await ApiSystemRoleIdPatch({ id: `${editId.value}`, ...data });
     ElMessage.success('更新成功');
   } else {
-    await ApiSystemMenuPost(data);
+    await ApiSystemRolePost(data);
     ElMessage.success('添加成功');
   }
   closeDialog();
   await getData();
 }
 
-async function editHandle(data: ApiSystemMenuTreeListGetResponse[number]) {
+async function editHandle(data: ListItem) {
   editId.value = data.id;
   showDialog.value = true;
 }
-function delHandle(data: ApiSystemMenuTreeListGetResponse[number]) {
+function delHandle(data: ListItem) {
   ElMessageBox.confirm(`确定删除${data.name}吗？`, '确定删除', {
     type: 'warning',
     confirmButtonText: '删除',
   }).then(async () => {
-    await ApiSystemMenuIdDelete({ id: `${data.id}` });
+    await ApiSystemRoleIdDelete({ id: `${data.id}` });
     ElMessage.success('删除成功！');
     await getData();
   });
 }
 
-const colOptions = reactive<IColOption<ApiSystemMenuTreeListGetResponse[number]>[]>([
+const colOptions = reactive<IColOption<ListItem>[]>([
   {
     field: 'name',
     title: '名称',
   },
   {
-    field: 'accessCode',
-    title: '权限码',
+    field: 'remark',
+    title: '备注',
   },
   {
-    field: 'type',
-    title: '类型',
-    formatter: (val) => ({ 1: '菜单', 2: '按钮' }[val]),
-  },
-  {
-    field: 'show',
-    title: '是否显示',
-    formatter: (val) => ({ 0: '否', 1: '是' }[val]),
-  },
-  {
-    field: 'sort',
-    title: '排序',
+    field: 'status',
+    title: '状态',
+    width: 100,
+    formatter: (val) => ({ 0: '停用', 1: '正常' }[val]),
   },
   {
     field: 'createdAt',
@@ -116,6 +110,7 @@ const colOptions = reactive<IColOption<ApiSystemMenuTreeListGetResponse[number]>
   },
   {
     title: '操作',
+    width: 140,
     items: [
       {
         type: 'button',
