@@ -1,9 +1,13 @@
+/* eslint-disable */
+// noinspection SpellCheckingInspection
+
 import { defineConfig, Interface, ChangeCase } from 'yapi-to-typescript';
 // yapi平台相关配置
 const yapiConfig = {
   serverUrl: 'http://192.168.16.27:3000',
   token: '9a61798f5fee17deabbec50e6ba1343f188a1361acf9365430a33feacc1805b5',
 };
+// noinspection NonAsciiCharacters
 const fileNameMap: any = {
   auth: 'auth',
   '系统管理-菜单': 'SysMenu',
@@ -13,7 +17,8 @@ const fileNameMap: any = {
 // 配置详情。 https://fjc0k.github.io/yapi-to-typescript/handbook/config.html
 export default defineConfig([
   {
-    serverUrl: yapiConfig.serverUrl,
+    serverUrl: 'http://192.168.100.179:3000/api/other/swagger-docs', // yapiConfig.serverUrl,
+    serverType: 'swagger',
     typesOnly: false,
     target: 'typescript',
     devEnvName: '测试',

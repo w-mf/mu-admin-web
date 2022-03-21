@@ -94,7 +94,7 @@ function resetPassword(data: ListItem) {
     if (res.action !== 'confirm') return;
     try {
       const password = res.value && (await ApiAuthEncryptionPost({ str: res.value }));
-      await ApiSystemAccountIdResetPasswordPost({ id: data.id, password });
+      await ApiSystemAccountIdResetPasswordPost({ id: `${data.id}`, password });
       ElMessage.success('重置成功！');
     } catch (e) {
       ElMessage.error('重置失败！');
