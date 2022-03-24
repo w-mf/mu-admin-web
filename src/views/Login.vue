@@ -11,9 +11,11 @@
 import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
+import { useStore } from 'vuex';
 
 import { ApiAuthEncryptionPost, ApiAuthLoginPost } from '~/api/Auth';
 
+const store = useStore();
 const router = useRouter();
 const form = reactive({
   userName: '',
@@ -37,7 +39,7 @@ async function loginHandle() {
       password: encryptionPassword,
     });
     ElMessage.success({ message: '登录成功', duration: 1000 });
-    localStorage.setItem('token', accessToken);
+    store.commit('SET_TOKEN', accessToken);
     await router.push('/home');
   } catch (e) {
     ElMessage.error('账户或密码错误');

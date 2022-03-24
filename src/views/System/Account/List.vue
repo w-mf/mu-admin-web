@@ -129,10 +129,6 @@ const colOptions = reactive<IColOption<ListItem>[]>([
     title: '角色',
   },
   {
-    field: 'remark',
-    title: '备注',
-  },
-  {
     field: 'status',
     title: '状态',
     width: 100,

@@ -6,7 +6,10 @@
 
 // @ts-ignore
 // prettier-ignore
-import { Method, RequestBodyType, ResponseBodyType, RequestConfig, RequestFunctionRestArgs, FileData, prepare } from 'yapi-to-typescript'
+import { QueryStringArrayFormat, Method, RequestBodyType, ResponseBodyType, FileData, prepare } from 'yapi-to-typescript'
+// @ts-ignore
+// prettier-ignore
+import type { RequestConfig, RequestFunctionRestArgs } from 'yapi-to-typescript'
 // @ts-ignore
 import request from '../utils/HttpClient';
 
@@ -134,6 +137,7 @@ const apiSystemMenuPostRequestConfig: ApiSystemMenuPostRequestConfig = /*#__PURE
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemMenuPost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -232,6 +236,7 @@ const apiSystemMenuListGetRequestConfig: ApiSystemMenuListGetRequestConfig = /*#
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemMenuListGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -371,6 +376,7 @@ const apiSystemMenuTreeListGetRequestConfig: ApiSystemMenuTreeListGetRequestConf
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemMenuTreeListGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -474,6 +480,7 @@ const apiSystemMenuIdGetRequestConfig: ApiSystemMenuIdGetRequestConfig = /*#__PU
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemMenuIdGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -598,6 +605,7 @@ const apiSystemMenuIdPatchRequestConfig: ApiSystemMenuIdPatchRequestConfig = /*#
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemMenuIdPatch',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -661,6 +669,7 @@ const apiSystemMenuIdDeleteRequestConfig: ApiSystemMenuIdDeleteRequestConfig = /
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemMenuIdDelete',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 

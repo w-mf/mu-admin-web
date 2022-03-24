@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { ElMessage } from 'element-plus';
 import type { RequestFunctionParams } from 'yapi-to-typescript';
+// eslint-disable-next-line import/no-cycle
+import store from '~/stores/index';
 
 type ApiModelType = 'local' | 'test' | 'prod' | 'mock';
 // 开发环境才使用apiModel
@@ -14,7 +16,7 @@ const yttHttpClientInstance = axios.create({
 yttHttpClientInstance.interceptors.request.use(
   (config) => {
     const cfg = config;
-    if (cfg.headers) cfg.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+    if (cfg.headers) cfg.headers.Authorization = `Bearer ${store.state.token}`;
     return cfg;
   },
   (error) => {
@@ -25,6 +27,10 @@ yttHttpClientInstance.interceptors.request.use(
 // 响应拦截器
 yttHttpClientInstance.interceptors.response.use(
   (response) => {
+    const isRefreshToken = response.headers['refresh-token'] && response.headers['refresh-token'] === 'true';
+    if (isRefreshToken) {
+      store.dispatch('refreshToken').then();
+    }
     return Promise.resolve(response.data);
   },
   (error: AxiosError) => {

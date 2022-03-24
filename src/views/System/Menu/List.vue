@@ -101,6 +101,7 @@ const colOptions = reactive<IColOption<ApiSystemMenuTreeListGetResponse[number]>
   {
     field: 'sort',
     title: '排序',
+    width: 100,
   },
   {
     field: 'createdAt',

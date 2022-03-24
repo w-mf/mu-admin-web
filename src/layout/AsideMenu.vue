@@ -4,7 +4,13 @@
       <img alt="logo" :src="props.expand ? logoExpand : logoFold" />
     </div>
     <div>
-      <ElMenu router default-active="/home" class="not-border" background-color="transparent" :collapse="!expand">
+      <ElMenu
+        router
+        :default-active="defaultActive"
+        class="not-border"
+        background-color="transparent"
+        :collapse="!expand"
+      >
         <template v-for="(item, index) of menuList" :key="index">
           <!-- 一级 -->
           <ElMenuItem
@@ -40,15 +46,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import logoExpand from '~/assets/images/logo-expand.png';
 import logoFold from '~/assets/images/logo-fold.png';
 
 import * as Icon from '@element-plus/icons-vue';
 import { dynamicRoutes, IRoute } from '~/routers';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
-import { ApiSystemAccountGetPermissionsGet } from '~/api/SysAccount';
+import { ApiSystemAccountPermissionsGet } from '~/api/SysAccount';
 
 const store = useStore();
 const props = withDefaults(
@@ -59,6 +66,10 @@ const props = withDefaults(
     expand: true,
   },
 );
+
+const route = useRoute();
+const defaultActive = ref<string>(route.path || '/home');
+
 function routeHandle(routers: IRoute[]): IRoute[] {
   // meta.isMenu = true 并且权限码和后端返回的匹配上才显示
   return routers
@@ -77,7 +88,7 @@ function routeHandle(routers: IRoute[]): IRoute[] {
 const menuList = computed(() => routeHandle(dynamicRoutes));
 
 onMounted(() => {
-  ApiSystemAccountGetPermissionsGet().then((res) => store.dispatch('setPermissionCodes', res));
+  ApiSystemAccountPermissionsGet().then((res) => store.commit('SET_PERMISSION_CODES', res));
 });
 </script>
 

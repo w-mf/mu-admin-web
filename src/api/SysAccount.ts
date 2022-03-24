@@ -6,7 +6,10 @@
 
 // @ts-ignore
 // prettier-ignore
-import { Method, RequestBodyType, ResponseBodyType, RequestConfig, RequestFunctionRestArgs, FileData, prepare } from 'yapi-to-typescript'
+import { QueryStringArrayFormat, Method, RequestBodyType, ResponseBodyType, FileData, prepare } from 'yapi-to-typescript'
+// @ts-ignore
+// prettier-ignore
+import type { RequestConfig, RequestFunctionRestArgs } from 'yapi-to-typescript'
 // @ts-ignore
 import request from '../utils/HttpClient';
 
@@ -159,6 +162,7 @@ const apiSystemAccountPostRequestConfig: ApiSystemAccountPostRequestConfig = /*#
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemAccountPost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -306,6 +310,7 @@ const apiSystemAccountGetRequestConfig: ApiSystemAccountGetRequestConfig = /*#__
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemAccountGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -322,6 +327,80 @@ export const ApiSystemAccountGet = /*#__PURE__*/ (
 };
 
 ApiSystemAccountGet.requestConfig = apiSystemAccountGetRequestConfig;
+
+/**
+ * 接口 获取用户权限 的 **请求类型**
+ *
+ * @分类 系统管理-用户
+ */
+export interface ApiSystemAccountPermissionsGetRequest {}
+
+/**
+ * 接口 获取用户权限 的 **返回类型**
+ *
+ * @分类 系统管理-用户
+ */
+export type ApiSystemAccountPermissionsGetResponse = unknown[];
+
+/**
+ * 接口 获取用户权限 的 **请求配置的类型**
+ *
+ * @分类 系统管理-用户
+ */
+type ApiSystemAccountPermissionsGetRequestConfig = Readonly<
+  RequestConfig<
+    'http://127.0.0.1:50505/mock/0',
+    '',
+    '',
+    '/api/system/account/permissions',
+    'data',
+    string,
+    string,
+    true
+  >
+>;
+
+/**
+ * 接口 获取用户权限 的 **请求配置**
+ *
+ * @分类 系统管理-用户
+ */
+const apiSystemAccountPermissionsGetRequestConfig: ApiSystemAccountPermissionsGetRequestConfig = /*#__PURE__*/ {
+  mockUrl: mockUrl_0_0_0_1,
+  devUrl: devUrl_0_0_0_1,
+  prodUrl: prodUrl_0_0_0_1,
+  path: '/api/system/account/permissions',
+  method: Method.GET,
+  requestHeaders: {},
+  requestBodyType: RequestBodyType.query,
+  responseBodyType: ResponseBodyType.json,
+  dataKey: dataKey_0_0_0_1,
+  paramNames: [],
+  queryNames: [],
+  requestDataOptional: true,
+  requestDataJsonSchema: {},
+  responseDataJsonSchema: {},
+  requestFunctionName: 'ApiSystemAccountPermissionsGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
+  extraInfo: {},
+};
+
+/**
+ * 接口 获取用户权限 的 **请求函数**
+ *
+ * @分类 系统管理-用户
+ */
+export const ApiSystemAccountPermissionsGet = /*#__PURE__*/ (
+  requestData?: ApiSystemAccountPermissionsGetRequest,
+  ...args: UserRequestRestArgs
+) => {
+  return request<ApiSystemAccountPermissionsGetResponse>(
+    prepare(apiSystemAccountPermissionsGetRequestConfig, requestData),
+    ...args,
+  );
+};
+
+ApiSystemAccountPermissionsGet.requestConfig = apiSystemAccountPermissionsGetRequestConfig;
 
 /**
  * 接口 查询用户详细 的 **请求类型**
@@ -423,6 +502,7 @@ const apiSystemAccountIdGetRequestConfig: ApiSystemAccountIdGetRequestConfig = /
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemAccountIdGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -518,6 +598,7 @@ const apiSystemAccountIdPatchRequestConfig: ApiSystemAccountIdPatchRequestConfig
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemAccountIdPatch',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -581,6 +662,7 @@ const apiSystemAccountIdDeleteRequestConfig: ApiSystemAccountIdDeleteRequestConf
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemAccountIdDelete',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -664,6 +746,7 @@ const apiSystemAccountIdSetPasswordPostRequestConfig: ApiSystemAccountIdSetPassw
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemAccountIdSetPasswordPost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -744,6 +827,7 @@ const apiSystemAccountIdResetPasswordPostRequestConfig: ApiSystemAccountIdResetP
     requestDataJsonSchema: {},
     responseDataJsonSchema: {},
     requestFunctionName: 'ApiSystemAccountIdResetPasswordPost',
+    queryStringArrayFormat: QueryStringArrayFormat.brackets,
     extraInfo: {},
   };
 

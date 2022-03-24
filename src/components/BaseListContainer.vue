@@ -3,7 +3,7 @@
     <div ref="SearchRef" class="base-list-container__search">
       <slot />
     </div>
-    <div class="base-list-container__table">
+    <div :class="['base-list-container__table', props.isPage ? '' : 'not-page']">
       <ElTable :key="timestamp" :data="props.listData" stripe row-key="id" :height="tableHeight">
         <template #empty><ElEmpty description="暂无数据" /></template>
         <ElTableColumn
@@ -103,7 +103,7 @@ const onPageNoChange = (val: number) => {
   emit('pageChange', { pageNo: val, pageSize: props.page.pageSize });
 };
 const timestamp = ref();
-const tableHeight = ref<number>();
+const tableHeight = ref<number>(0);
 
 // 动态设置table height
 const onWindowResize = debounce(() => {
@@ -143,10 +143,16 @@ onUnmounted(() => {
     .base-list-container__table_cell_empty {
       color: $secondaty-text;
     }
+    &.not-page .el-table__inner-wrapper:before {
+      display: none;
+    }
   }
   .base-list-container__pagination {
     flex: 0 0 auto;
     padding: 20px 0;
+    .el-pagination__sizes {
+      margin-left: 16px;
+    }
   }
 }
 </style>

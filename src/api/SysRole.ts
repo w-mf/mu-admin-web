@@ -6,7 +6,10 @@
 
 // @ts-ignore
 // prettier-ignore
-import { Method, RequestBodyType, ResponseBodyType, RequestConfig, RequestFunctionRestArgs, FileData, prepare } from 'yapi-to-typescript'
+import { QueryStringArrayFormat, Method, RequestBodyType, ResponseBodyType, FileData, prepare } from 'yapi-to-typescript'
+// @ts-ignore
+// prettier-ignore
+import type { RequestConfig, RequestFunctionRestArgs } from 'yapi-to-typescript'
 // @ts-ignore
 import request from '../utils/HttpClient';
 
@@ -118,6 +121,7 @@ const apiSystemRolePostRequestConfig: ApiSystemRolePostRequestConfig = /*#__PURE
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemRolePost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -240,6 +244,7 @@ const apiSystemRoleGetRequestConfig: ApiSystemRoleGetRequestConfig = /*#__PURE__
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemRoleGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -298,6 +303,7 @@ const apiSystemRoleSimpleListGetRequestConfig: ApiSystemRoleSimpleListGetRequest
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemRoleSimpleListGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -393,6 +399,7 @@ const apiSystemRoleIdGetRequestConfig: ApiSystemRoleIdGetRequestConfig = /*#__PU
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemRoleIdGet',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -485,6 +492,7 @@ const apiSystemRoleIdPatchRequestConfig: ApiSystemRoleIdPatchRequestConfig = /*#
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemRoleIdPatch',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -548,6 +556,7 @@ const apiSystemRoleIdDeleteRequestConfig: ApiSystemRoleIdDeleteRequestConfig = /
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiSystemRoleIdDelete',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 

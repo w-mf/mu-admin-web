@@ -49,7 +49,7 @@ const expandChange = () => {
   background: #fff;
   position: relative;
   z-index: 2;
-  @include shadow-mixin(3, 'down');
+  box-shadow: (0 4px 12px -4px rgb(0 0 0 / 5%), 0 6px 20px 0 rgb(0 0 0 / 3%), 0 8px 28px 8px rgb(0 0 0 / 1%));
 
   .header__expandbtn {
     cursor: pointer;

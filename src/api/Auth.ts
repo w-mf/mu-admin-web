@@ -6,7 +6,10 @@
 
 // @ts-ignore
 // prettier-ignore
-import { Method, RequestBodyType, ResponseBodyType, RequestConfig, RequestFunctionRestArgs, FileData, prepare } from 'yapi-to-typescript'
+import { QueryStringArrayFormat, Method, RequestBodyType, ResponseBodyType, FileData, prepare } from 'yapi-to-typescript'
+// @ts-ignore
+// prettier-ignore
+import type { RequestConfig, RequestFunctionRestArgs } from 'yapi-to-typescript'
 // @ts-ignore
 import request from '../utils/HttpClient';
 
@@ -86,6 +89,7 @@ const apiAuthLoginPostRequestConfig: ApiAuthLoginPostRequestConfig = /*#__PURE__
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiAuthLoginPost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -149,6 +153,7 @@ const apiAuthEncryptionPostRequestConfig: ApiAuthEncryptionPostRequestConfig = /
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
   requestFunctionName: 'ApiAuthEncryptionPost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
@@ -167,41 +172,46 @@ export const ApiAuthEncryptionPost = /*#__PURE__*/ (
 ApiAuthEncryptionPost.requestConfig = apiAuthEncryptionPostRequestConfig;
 
 /**
- * 接口 获取用户权限 的 **请求类型**
+ * 接口 刷新token 的 **请求类型**
  *
  * @分类 auth
  */
-export interface ApiAuthPermissionsGetRequest {}
+export interface ApiAuthRefreshTokenPostRequest {}
 
 /**
- * 接口 获取用户权限 的 **返回类型**
+ * 接口 刷新token 的 **返回类型**
  *
  * @分类 auth
  */
-export type ApiAuthPermissionsGetResponse = unknown[];
+export interface ApiAuthRefreshTokenPostResponse {
+  /**
+   * 用户认证token
+   */
+  accessToken: string;
+}
 
 /**
- * 接口 获取用户权限 的 **请求配置的类型**
+ * 接口 刷新token 的 **请求配置的类型**
  *
  * @分类 auth
  */
-type ApiAuthPermissionsGetRequestConfig = Readonly<
-  RequestConfig<'http://127.0.0.1:50505/mock/0', '', '', '/api/auth/permissions', 'data', string, string, true>
+type ApiAuthRefreshTokenPostRequestConfig = Readonly<
+  RequestConfig<'http://127.0.0.1:50505/mock/0', '', '', '/api/auth/refresh-token', 'data', string, string, true>
 >;
 
 /**
- * 接口 获取用户权限 的 **请求配置**
+ * 接口 刷新token 的 **请求配置**
  *
  * @分类 auth
  */
-const apiAuthPermissionsGetRequestConfig: ApiAuthPermissionsGetRequestConfig = /*#__PURE__*/ {
+const apiAuthRefreshTokenPostRequestConfig: ApiAuthRefreshTokenPostRequestConfig = /*#__PURE__*/ {
   mockUrl: mockUrl_0_0_0_3,
   devUrl: devUrl_0_0_0_3,
   prodUrl: prodUrl_0_0_0_3,
-  path: '/api/auth/permissions',
-  method: Method.GET,
+  path: '/api/auth/refresh-token',
+  method: Method.POST,
   requestHeaders: {},
-  requestBodyType: RequestBodyType.query,
+  requestBodyType: RequestBodyType.raw,
   responseBodyType: ResponseBodyType.json,
   dataKey: dataKey_0_0_0_3,
   paramNames: [],
@@ -209,22 +219,23 @@ const apiAuthPermissionsGetRequestConfig: ApiAuthPermissionsGetRequestConfig = /
   requestDataOptional: true,
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},
-  requestFunctionName: 'ApiAuthPermissionsGet',
+  requestFunctionName: 'ApiAuthRefreshTokenPost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
   extraInfo: {},
 };
 
 /**
- * 接口 获取用户权限 的 **请求函数**
+ * 接口 刷新token 的 **请求函数**
  *
  * @分类 auth
  */
-export const ApiAuthPermissionsGet = /*#__PURE__*/ (
-  requestData?: ApiAuthPermissionsGetRequest,
+export const ApiAuthRefreshTokenPost = /*#__PURE__*/ (
+  requestData?: ApiAuthRefreshTokenPostRequest,
   ...args: UserRequestRestArgs
 ) => {
-  return request<ApiAuthPermissionsGetResponse>(prepare(apiAuthPermissionsGetRequestConfig, requestData), ...args);
+  return request<ApiAuthRefreshTokenPostResponse>(prepare(apiAuthRefreshTokenPostRequestConfig, requestData), ...args);
 };
 
-ApiAuthPermissionsGet.requestConfig = apiAuthPermissionsGetRequestConfig;
+ApiAuthRefreshTokenPost.requestConfig = apiAuthRefreshTokenPostRequestConfig;
 
 /* prettier-ignore-end */
