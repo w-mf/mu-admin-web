@@ -4,5 +4,6 @@ module.exports = {
   rules: {
     'scss/at-import-partial-extension': 'always',
     'selector-class-pattern': /^[a-z]+.*$/,
-  }
+  },
+  ignoreFiles: ['node_modules/','build/','dist/','**/*.min.css','**/*-min.css','**/*.bundle.css']
 };

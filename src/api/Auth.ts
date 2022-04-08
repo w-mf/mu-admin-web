@@ -32,6 +32,80 @@ const prodUrl_0_0_0_3 = '' as any;
 const dataKey_0_0_0_3 = 'data' as any;
 
 /**
+ * 接口 获取验证码 的 **请求类型**
+ *
+ * @分类 auth
+ */
+export interface ApiAuthGetImgVerifyCodePostRequest {}
+
+/**
+ * 接口 获取验证码 的 **返回类型**
+ *
+ * @分类 auth
+ */
+export interface ApiAuthGetImgVerifyCodePostResponse {
+  /**
+   * 唯一值
+   */
+  uuid: string;
+  /**
+   * 验证码
+   */
+  img: string;
+}
+
+/**
+ * 接口 获取验证码 的 **请求配置的类型**
+ *
+ * @分类 auth
+ */
+type ApiAuthGetImgVerifyCodePostRequestConfig = Readonly<
+  RequestConfig<'http://127.0.0.1:50505/mock/0', '', '', '/api/auth/get-img-verify-code', 'data', string, string, true>
+>;
+
+/**
+ * 接口 获取验证码 的 **请求配置**
+ *
+ * @分类 auth
+ */
+const apiAuthGetImgVerifyCodePostRequestConfig: ApiAuthGetImgVerifyCodePostRequestConfig = /*#__PURE__*/ {
+  mockUrl: mockUrl_0_0_0_3,
+  devUrl: devUrl_0_0_0_3,
+  prodUrl: prodUrl_0_0_0_3,
+  path: '/api/auth/get-img-verify-code',
+  method: Method.POST,
+  requestHeaders: {},
+  requestBodyType: RequestBodyType.raw,
+  responseBodyType: ResponseBodyType.json,
+  dataKey: dataKey_0_0_0_3,
+  paramNames: [],
+  queryNames: [],
+  requestDataOptional: true,
+  requestDataJsonSchema: {},
+  responseDataJsonSchema: {},
+  requestFunctionName: 'ApiAuthGetImgVerifyCodePost',
+  queryStringArrayFormat: QueryStringArrayFormat.brackets,
+  extraInfo: {},
+};
+
+/**
+ * 接口 获取验证码 的 **请求函数**
+ *
+ * @分类 auth
+ */
+export const ApiAuthGetImgVerifyCodePost = /*#__PURE__*/ (
+  requestData?: ApiAuthGetImgVerifyCodePostRequest,
+  ...args: UserRequestRestArgs
+) => {
+  return request<ApiAuthGetImgVerifyCodePostResponse>(
+    prepare(apiAuthGetImgVerifyCodePostRequestConfig, requestData),
+    ...args,
+  );
+};
+
+ApiAuthGetImgVerifyCodePost.requestConfig = apiAuthGetImgVerifyCodePostRequestConfig;
+
+/**
  * 接口 登录 的 **请求类型**
  *
  * @分类 auth
@@ -45,6 +119,14 @@ export interface ApiAuthLoginPostRequest {
    * 密码。需经过接口 auth/encryption 加密过的字符串
    */
   password: string;
+  /**
+   * 图形验证码
+   */
+  verifyCode: string;
+  /**
+   * 图形验证码的uuid
+   */
+  verifyCodeUuid: string;
 }
 
 /**

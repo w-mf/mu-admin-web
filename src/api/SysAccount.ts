@@ -214,6 +214,9 @@ export interface ApiSystemAccountGetResponse {
    * 页码
    */
   pageNo: number;
+  /**
+   * 列表数据。
+   */
   list: {
     /**
      * 状态。1:正常，0: 停用

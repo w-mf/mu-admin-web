@@ -4,7 +4,7 @@
 import { defineConfig, Interface, ChangeCase } from 'yapi-to-typescript';
 // yapi平台相关配置
 const yapiConfig = {
-  serverUrl: 'http://192.168.16.27:3000',
+  serverUrl: 'http://120.76.45.44:3000',
   token: '9a61798f5fee17deabbec50e6ba1343f188a1361acf9365430a33feacc1805b5',
 };
 // noinspection NonAsciiCharacters
@@ -13,11 +13,12 @@ const fileNameMap: any = {
   '系统管理-菜单': 'SysMenu',
   '系统管理-用户': 'SysAccount',
   '系统管理-角色': 'SysRole',
+  '日志管理-登录日志': 'LogLogin',
 };
 // 配置详情。 https://fjc0k.github.io/yapi-to-typescript/handbook/config.html
 export default defineConfig([
   {
-    serverUrl: 'http://192.168.100.179:3000/api/other/swagger-docs', // yapiConfig.serverUrl,
+    serverUrl: 'http://120.76.45.44:3000/api/other/swagger-docs', // yapiConfig.serverUrl,
     serverType: 'swagger',
     typesOnly: false,
     target: 'typescript',

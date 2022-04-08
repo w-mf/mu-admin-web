@@ -173,6 +173,9 @@ export interface ApiSystemRoleGetResponse {
    * 页码
    */
   pageNo: number;
+  /**
+   * 列表数据。
+   */
   list: {
     /**
      * 状态。1:正常，0: 停用
@@ -271,7 +274,16 @@ export interface ApiSystemRoleSimpleListGetRequest {}
  *
  * @分类 系统管理-角色
  */
-export type ApiSystemRoleSimpleListGetResponse = {}[];
+export type ApiSystemRoleSimpleListGetResponse = {
+  /**
+   * role id
+   */
+  value: number;
+  /**
+   * role name
+   */
+  label: string;
+}[];
 
 /**
  * 接口 查询角色,枚举 的 **请求配置的类型**

@@ -46,7 +46,12 @@ yttHttpClientInstance.interceptors.response.use(
         });
         break;
       case 400: // 验证失败
-        // 走默认的 return，不提示
+        if (error.response?.data?.message) {
+          if (Array.isArray(error.response.data.message)) ElMessage.error(error.response.data.message[0]);
+          else ElMessage.error(error.response.data.message);
+        } else {
+          ElMessage.error(`${error.response?.status} 校验失败`);
+        }
         break;
       default:
         ElMessage.error(error.response?.data?.message || `${error.response?.status} 服务出错了，请稍后重试`);
