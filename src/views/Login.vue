@@ -5,7 +5,7 @@
         <ElIcon><User color="#fff" /></ElIcon>
       </div>
       <h3>用户登录</h3>
-      <ElForm ref="formRef" :model="form" :rules="rules" size="large">
+      <ElForm ref="formRef" :model="form" :rules="rules" size="large" @keyup.enter="loginHandle">
         <ElFormItem prop="userName">
           <ElInput v-model="form.userName" placeholder="用户名" />
         </ElFormItem>
@@ -70,7 +70,7 @@ async function getImgVerifyCode() {
 }
 
 async function loginHandle() {
-  const isValid = formRef.value
+  const isValid = await formRef.value
     ?.validate()
     .then(() => true)
     .catch(() => false);

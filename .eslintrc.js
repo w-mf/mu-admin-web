@@ -36,5 +36,14 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
   },
-  ignorePatterns: ['node_modules/', 'build/', 'dist/', '**/*.min.js', '**/*-min.js', '**/*.bundle.js', '.vscode'],
+  ignorePatterns: [
+    'node_modules/',
+    'build/',
+    'dist/',
+    '**/*.min.js',
+    '**/*-min.js',
+    '**/*.bundle.js',
+    '**/*.d.ts',
+    '.vscode',
+  ],
 };

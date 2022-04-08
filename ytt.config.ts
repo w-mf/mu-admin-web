@@ -18,7 +18,7 @@ const fileNameMap: any = {
 // 配置详情。 https://fjc0k.github.io/yapi-to-typescript/handbook/config.html
 export default defineConfig([
   {
-    serverUrl: 'http://120.76.45.44:3000/api/other/swagger-docs', // yapiConfig.serverUrl,
+    serverUrl: 'http://127.0.0.1:3000/api/other/swagger-docs', // yapiConfig.serverUrl,
     serverType: 'swagger',
     typesOnly: false,
     target: 'typescript',

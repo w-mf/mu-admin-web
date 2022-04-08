@@ -62,6 +62,28 @@ export const dynamicRoutes: IRoute[] = [
       },
     ],
   },
+  {
+    path: '/log',
+    component: ListContainer,
+    redirect: '/log/login-log',
+    meta: {
+      isMenu: true,
+      permissionCode: 'log',
+      icon: 'Avatar',
+      title: '日志管理',
+    },
+    children: [
+      {
+        path: '/log/login-log',
+        component: () => import('~/views/Log/LoginLog/List.vue'),
+        meta: {
+          isMenu: true,
+          permissionCode: 'log:login:list',
+          title: '登录日志',
+        },
+      },
+    ],
+  },
 ];
 const router = createRouter({
   history: createWebHistory(),

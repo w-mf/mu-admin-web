@@ -3,8 +3,16 @@
     <div ref="SearchRef" class="base-list-container__search">
       <slot />
     </div>
+    <div v-if="notes" ref="notesRef" class="base-list-container__notes">{{ notes }}</div>
     <div :class="['base-list-container__table', props.isPage ? '' : 'not-page']">
-      <ElTable :key="timestamp" :data="props.listData" stripe row-key="id" :height="tableHeight">
+      <ElTable
+        :key="timestamp"
+        :data="props.listData"
+        stripe
+        row-key="id"
+        header-cell-class-name="table-header"
+        :height="tableHeight"
+      >
         <template #empty><ElEmpty description="暂无数据" /></template>
         <ElTableColumn
           v-for="(item, index) of props.colOptions"
@@ -15,7 +23,11 @@
           :width="item.width"
         >
           <template v-if="item.field">
-            <template v-if="(item.formatter && item.formatter(row[item.field])) || row[item.field]">
+            <ElTag v-if="item.type === 'tag'" :type="item.tagMenu[row[item.field]].type || ''">{{
+              item.tagMenu[row[item.field]].text || ''
+            }}</ElTag>
+
+            <template v-else-if="(item.formatter && item.formatter(row[item.field])) || row[item.field]">
               {{ item.formatter ? item.formatter(row[item.field]) : row[item.field] }}
             </template>
             <div v-else class="base-list-container__table_cell_empty">-</div>
@@ -53,6 +65,7 @@ import { ref, onMounted, onUnmounted } from 'vue';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { debounce } from 'lodash';
 import type { ElTableColumn } from 'element-plus';
+import { TagProps } from 'element-plus/es/components/tag/src/tag';
 
 export interface IColOption<T> {
   field?: string;
@@ -65,6 +78,8 @@ export interface IColOption<T> {
     opts?: unknown;
     onClick?: (val: T) => void;
   }>;
+  type?: 'tag';
+  tagMenu?: { [key: string | number]: { text: string; type: TagProps['type'] } };
 }
 export interface IPage {
   pageNo: number;
@@ -77,6 +92,7 @@ const props = withDefaults(
     listData: unknown[];
     page?: IPage;
     isPage?: boolean;
+    notes?: string;
   }>(),
   {
     colOptions: () => [],
@@ -87,6 +103,7 @@ const props = withDefaults(
       total: 0,
     }),
     isPage: true,
+    notes: '',
   },
 );
 const emit = defineEmits<{
@@ -94,6 +111,7 @@ const emit = defineEmits<{
 }>();
 
 const SearchRef = ref<HTMLElement>();
+const notesRef = ref<HTMLElement>();
 
 const PaginationRef = ref<HTMLElement>();
 const onPageSizeChange = (val: number) => {
@@ -110,8 +128,9 @@ const onWindowResize = debounce(() => {
   const mainHeight = document.getElementById('mainContainer')?.offsetHeight || 0;
   const pageNavHeight = document.getElementById('pageNav')?.offsetHeight || 0;
   const searchHeight = SearchRef.value?.offsetHeight || 0;
+  const notesHeight = notesRef.value?.offsetHeight || 0;
   const paginationHeight = PaginationRef.value?.offsetHeight || 0;
-  tableHeight.value = mainHeight - pageNavHeight - searchHeight - paginationHeight - 10; // body-container__wrap padding-bottom=10
+  tableHeight.value = mainHeight - pageNavHeight - searchHeight - notesHeight - paginationHeight - 10; // body-container__wrap padding-bottom=10
   timestamp.value = new Date().getTime();
 }, 200);
 onMounted(() => {
@@ -138,7 +157,15 @@ onUnmounted(() => {
     flex: 0 0 auto;
     padding: 20px 0;
   }
+  .base-list-container__notes {
+    color: var(--el-text-color-placeholder);
+    padding-bottom: 4px;
+    font-size: 12px;
+  }
   .base-list-container__table {
+    .table-header {
+      background: #f8f8fa;
+    }
     flex: 1;
     .base-list-container__table_cell_empty {
       color: $secondaty-text;
