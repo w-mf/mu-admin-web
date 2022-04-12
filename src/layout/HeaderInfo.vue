@@ -1,17 +1,46 @@
 <template>
   <div class="header-info">
     <slot />
-    <div class="header-info__user">
-      <img alt="用户头像" :src="img" />
-      <span>用户名称</span>
-    </div>
+    <ElDropdown size="large" @command="commandHandle">
+      <template #default>
+        <div class="header-info__user">
+          <ElAvatar :size="32" :icon="Avatar" />
+          <div class="header-info__user_name">{{ userInfo.userName }}</div>
+          <ElIcon class="header-info__user_icon"><CaretBottom /></ElIcon>
+        </div>
+      </template>
+      <template #dropdown>
+        <el-dropdown-menu class="header-info__user_dropdown">
+          <el-dropdown-item :command="COMMAND.USER_CENTER">个人信息(开发中...)</el-dropdown-item>
+          <el-dropdown-item :command="COMMAND.LOGOUT" class="logout" divided>退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </ElDropdown>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
+import { CaretBottom, Avatar } from '@element-plus/icons-vue';
+import { useStore } from 'vuex';
 
-const img = ref();
+enum COMMAND {
+  'USER_CENTER' = 'userCenter',
+  LOGOUT = 'logout',
+}
+const store = useStore();
+const userInfo = computed(() => store.state.userInfo) || {};
+function commandHandle(command: COMMAND) {
+  switch (command) {
+    case COMMAND.USER_CENTER:
+      //
+      break;
+    case COMMAND.LOGOUT:
+      store.dispatch('logout');
+      break;
+    default:
+  }
+}
 </script>
 <style lang="scss" scoped>
 .header-info {
@@ -20,12 +49,38 @@ const img = ref();
   justify-content: space-between;
   height: 100%;
 
-  .header-info_user {
-    img {
+  .header-info__user {
+    display: flex;
+    align-items: center;
+    .header-info__user_img {
       width: 30px;
       height: 30px;
-      border-top: 1px solid var(--el-border-color-base);
+      border: 1px solid var(--el-border-color-base);
+      overflow: hidden;
+      background: #f5f5f5;
+      border-radius: 50%;
+      img {
+        width: 100%;
+        height: 100%;
+      }
     }
+    .header-info__user_name {
+      padding: 0 6px;
+    }
+    .header-info__user_icon {
+      color: #666;
+    }
+  }
+}
+</style>
+<style lang="scss">
+.header-info__user_dropdown {
+  min-width: 180px;
+  li {
+    justify-content: center;
+  }
+  .logout {
+    color: var(--el-color-danger);
   }
 }
 </style>

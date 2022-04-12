@@ -51,7 +51,8 @@ import logoExpand from '~/assets/images/logo-expand.png';
 import logoFold from '~/assets/images/logo-fold.png';
 
 import * as Icon from '@element-plus/icons-vue';
-import { dynamicRoutes, IRoute } from '~/routers';
+import { dynamicRoutes } from '~/routers';
+import type { IRoute } from '~/routers/router.d';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 

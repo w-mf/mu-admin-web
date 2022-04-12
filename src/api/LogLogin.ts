@@ -163,6 +163,10 @@ export interface ApiLogLoginLogGetRequest {
    */
   pageSize: string;
   /**
+   * 状态。1:成功，0: 失败
+   */
+  status?: string;
+  /**
    * 开始时间。格式 Date
    */
   startDate?: string;
@@ -170,6 +174,10 @@ export interface ApiLogLoginLogGetRequest {
    * 结束时间。格式 Date
    */
   endDate?: string;
+  /**
+   * 登录账号
+   */
+  userName?: string;
 }
 
 /**
@@ -242,7 +250,7 @@ type ApiLogLoginLogGetRequestConfig = Readonly<
     '/api/log/login-log',
     'data',
     string,
-    'pageNo' | 'pageSize' | 'startDate' | 'endDate',
+    'pageNo' | 'pageSize' | 'status' | 'startDate' | 'endDate' | 'userName',
     false
   >
 >;
@@ -263,7 +271,7 @@ const apiLogLoginLogGetRequestConfig: ApiLogLoginLogGetRequestConfig = /*#__PURE
   responseBodyType: ResponseBodyType.json,
   dataKey: dataKey_0_0_0_4,
   paramNames: [],
-  queryNames: ['pageNo', 'pageSize', 'startDate', 'endDate'],
+  queryNames: ['pageNo', 'pageSize', 'status', 'startDate', 'endDate', 'userName'],
   requestDataOptional: false,
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},

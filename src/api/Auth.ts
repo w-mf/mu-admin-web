@@ -139,6 +139,51 @@ export interface ApiAuthLoginPostResponse {
    * 用户认证token
    */
   accessToken: string;
+  /**
+   * 用户信息
+   */
+  accountInfo: {
+    /**
+     * 状态。1:正常，0: 停用
+     */
+    status: 1 | 0;
+    /**
+     * 用户名,唯一
+     */
+    userName: string;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 昵称
+     */
+    nickname?: string;
+    /**
+     * 邮箱
+     */
+    email?: string;
+    /**
+     * 手机号
+     */
+    mobile?: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+    /**
+     * 唯一标识
+     */
+    id: number;
+    /**
+     * 创建时间
+     */
+    createdAt: string;
+    /**
+     * 更新时间
+     */
+    updatedAt: string;
+  };
 }
 
 /**
@@ -270,6 +315,51 @@ export interface ApiAuthRefreshTokenPostResponse {
    * 用户认证token
    */
   accessToken: string;
+  /**
+   * 用户信息
+   */
+  accountInfo: {
+    /**
+     * 状态。1:正常，0: 停用
+     */
+    status: 1 | 0;
+    /**
+     * 用户名,唯一
+     */
+    userName: string;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 昵称
+     */
+    nickname?: string;
+    /**
+     * 邮箱
+     */
+    email?: string;
+    /**
+     * 手机号
+     */
+    mobile?: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+    /**
+     * 唯一标识
+     */
+    id: number;
+    /**
+     * 创建时间
+     */
+    createdAt: string;
+    /**
+     * 更新时间
+     */
+    updatedAt: string;
+  };
 }
 
 /**

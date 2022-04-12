@@ -87,7 +87,7 @@ async function loginHandle() {
     ElMessage.error('服务出错，请重试');
   }
   try {
-    const { accessToken } = await ApiAuthLoginPost({
+    const { accessToken, accountInfo } = await ApiAuthLoginPost({
       userName: form.userName,
       password: encryptionPassword,
       verifyCodeUuid: form.imgVerifyCodeUuid,
@@ -95,6 +95,7 @@ async function loginHandle() {
     });
     ElMessage.success({ message: '登录成功', duration: 1000 });
     store.commit('SET_TOKEN', accessToken);
+    store.commit('SET_USER_INFO', accountInfo);
     await router.push('/home');
   } catch (e) {
     await getImgVerifyCode();

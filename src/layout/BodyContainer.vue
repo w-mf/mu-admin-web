@@ -7,11 +7,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 
-onMounted(() => {});
+onMounted(() => {
+  //
+});
 </script>
 
 <style scoped lang="scss">
-@import '~/styles/variable.scss';
+@import '../styles/variable.scss';
 
 .body-container__wrap {
   flex: 1;

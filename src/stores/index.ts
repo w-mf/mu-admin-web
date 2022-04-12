@@ -3,11 +3,12 @@ import { createStore } from 'vuex';
 import { ApiAuthRefreshTokenPost } from '~/api/Auth';
 import { debounce } from 'lodash';
 
-const store = createStore<{ token: string; permissionCodes: string[] }>({
+const store = createStore<{ token: string; permissionCodes: string[]; userInfo: object }>({
   state() {
     return {
       token: localStorage.getItem('token') || '',
       permissionCodes: JSON.parse(localStorage.getItem('permissions') || '[]'),
+      userInfo: JSON.parse(localStorage.getItem('userInfo') || '{}'),
     };
   },
   mutations: {
@@ -18,6 +19,10 @@ const store = createStore<{ token: string; permissionCodes: string[] }>({
     SET_PERMISSION_CODES(state, val: string[]) {
       localStorage.setItem('permissions', JSON.stringify(val));
       state.permissionCodes = val;
+    },
+    SET_USER_INFO(state, val) {
+      localStorage.setItem('userInfo', JSON.stringify(val));
+      state.userInfo = val;
     },
   },
   actions: {
@@ -31,6 +36,11 @@ const store = createStore<{ token: string; permissionCodes: string[] }>({
         trailing: false,
       },
     ),
+    logout(context) {
+      context.commit('SET_TOKEN', '');
+      context.commit('SET_PERMISSION_CODES', []);
+      window.location.href = '/login';
+    },
   },
 });
 export default store;
