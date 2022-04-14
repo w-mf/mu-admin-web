@@ -22,21 +22,21 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { CaretBottom, Avatar } from '@element-plus/icons-vue';
-import { useStore } from 'vuex';
+import { useAppStore } from '~/stores/app';
 
 enum COMMAND {
   'USER_CENTER' = 'userCenter',
   LOGOUT = 'logout',
 }
-const store = useStore();
-const userInfo = computed(() => store.state.userInfo) || {};
+const appStore = useAppStore();
+const userInfo = computed(() => appStore.userInfo) || {};
 function commandHandle(command: COMMAND) {
   switch (command) {
     case COMMAND.USER_CENTER:
       //
       break;
     case COMMAND.LOGOUT:
-      store.dispatch('logout');
+      appStore.logout();
       break;
     default:
   }

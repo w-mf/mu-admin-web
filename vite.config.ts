@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions,import/no-unresolved */
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
@@ -42,6 +43,13 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
     Components({
+      dts: true,
+      types: [
+        {
+          from: 'vue-router',
+          names: ['RouterLink', 'RouterView'],
+        },
+      ],
       resolvers: [ElementPlusResolver()],
     }),
   ],

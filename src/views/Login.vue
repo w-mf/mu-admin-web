@@ -34,11 +34,11 @@ import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage, FormInstance } from 'element-plus';
 import { User } from '@element-plus/icons-vue';
-import { useStore } from 'vuex';
+import { useAppStore } from '~/stores/app';
 
 import { ApiAuthEncryptionPost, ApiAuthLoginPost, ApiAuthGetImgVerifyCodePost } from '~/api/Auth';
 
-const store = useStore();
+const appStore = useAppStore();
 const router = useRouter();
 const formRef = ref<FormInstance>();
 const form = reactive({
@@ -94,8 +94,8 @@ async function loginHandle() {
       verifyCode: form.imgVerifyCodeValue,
     });
     ElMessage.success({ message: '登录成功', duration: 1000 });
-    store.commit('SET_TOKEN', accessToken);
-    store.commit('SET_USER_INFO', accountInfo);
+    appStore.setToken(accessToken);
+    appStore.setUserInfo(accountInfo);
     await router.push('/home');
   } catch (e) {
     await getImgVerifyCode();

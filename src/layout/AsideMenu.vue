@@ -16,6 +16,7 @@
           <ElMenuItem
             v-if="(!item.children || item.children.length === 0) && item.meta && item.meta.isMenu"
             :index="item.path"
+            :route="item"
           >
             <el-icon v-if="item.meta && item.meta.icon">
               <component :is="Icon[item.meta.icon]" />
@@ -46,19 +47,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import logoExpand from '~/assets/images/logo-expand.png';
 import logoFold from '~/assets/images/logo-fold.png';
 
 import * as Icon from '@element-plus/icons-vue';
 import { dynamicRoutes } from '~/routers';
 import type { IRoute } from '~/routers/router.d';
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useAppStore } from '~/stores/app';
+import { useNavTabsStore } from '~/stores/navTabs';
 
 import { ApiSystemAccountPermissionsGet } from '~/api/SysAccount';
 
-const store = useStore();
+const appStore = useAppStore();
+const navTabsStore = useNavTabsStore();
 const props = withDefaults(
   defineProps<{
     expand: boolean;
@@ -68,8 +70,7 @@ const props = withDefaults(
   },
 );
 
-const route = useRoute();
-const defaultActive = ref<string>(route.path || '/home');
+const defaultActive = computed(() => navTabsStore.activeTab);
 
 function routeHandle(routers: IRoute[]): IRoute[] {
   // meta.isMenu = true 并且权限码和后端返回的匹配上才显示
@@ -79,7 +80,7 @@ function routeHandle(routers: IRoute[]): IRoute[] {
         item.meta?.isMenu &&
         item.meta?.permissionCode &&
         // 首页默认显示
-        store.state.permissionCodes.concat(['home']).includes(item.meta.permissionCode),
+        appStore.permissionCodes.concat(['home']).includes(item.meta.permissionCode),
     )
     .map((item) => {
       if (item.children) return { ...item, children: routeHandle(item.children as typeof dynamicRoutes) };
@@ -89,7 +90,7 @@ function routeHandle(routers: IRoute[]): IRoute[] {
 const menuList = computed(() => routeHandle(dynamicRoutes));
 
 onMounted(() => {
-  ApiSystemAccountPermissionsGet().then((res) => store.commit('SET_PERMISSION_CODES', res));
+  ApiSystemAccountPermissionsGet().then((res: any) => appStore.setPermissionCodes(res));
 });
 </script>
 

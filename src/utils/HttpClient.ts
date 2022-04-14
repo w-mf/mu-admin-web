@@ -1,8 +1,10 @@
 import axios, { AxiosError } from 'axios';
+import nProgress from '~/utils/nprogress';
 import { ElMessage } from 'element-plus';
 import type { RequestFunctionParams } from 'yapi-to-typescript';
 // eslint-disable-next-line import/no-cycle
-import store from '~/stores/index';
+import { useAppStore } from '~/stores/app';
+import { useRouter } from 'vue-router';
 
 type ApiModelType = 'local' | 'test' | 'prod' | 'mock';
 // 开发环境才使用apiModel
@@ -15,8 +17,10 @@ const yttHttpClientInstance = axios.create({
 // 请求拦截器
 yttHttpClientInstance.interceptors.request.use(
   (config) => {
+    nProgress.start();
+    const appStore = useAppStore();
     const cfg = config;
-    if (cfg.headers) cfg.headers.Authorization = `Bearer ${store.state.token}`;
+    if (cfg.headers) cfg.headers.Authorization = `Bearer ${appStore.token}`;
     return cfg;
   },
   (error) => {
@@ -27,15 +31,27 @@ yttHttpClientInstance.interceptors.request.use(
 // 响应拦截器
 yttHttpClientInstance.interceptors.response.use(
   (response) => {
+    const appStore = useAppStore();
     const isRefreshToken = response.headers['refresh-token'] && response.headers['refresh-token'] === 'true';
     if (isRefreshToken) {
-      store.dispatch('refreshToken').then();
+      appStore.refreshToken();
     }
+    nProgress.done();
     return Promise.resolve(response.data);
   },
   (error: AxiosError) => {
     const { response } = error;
+    const router = useRouter();
     switch (response?.status) {
+      case 404:
+        router.push('/error/404').then();
+        break;
+      case 403:
+        router.push('/error/403').then();
+        break;
+      case 500:
+        router.push('/error/500').then();
+        break;
       case 401: // 登录失效 等异常请求
         ElMessage.error({
           message: `登录失效，请重新登录`,
@@ -56,6 +72,7 @@ yttHttpClientInstance.interceptors.response.use(
       default:
         ElMessage.error(error.response?.data?.message || `${error.response?.status} 服务出错了，请稍后重试`);
     }
+    nProgress.done();
     return Promise.reject(response?.data);
   },
 );

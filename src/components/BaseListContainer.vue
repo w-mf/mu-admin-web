@@ -1,18 +1,11 @@
 <template>
   <div class="base-list-container">
-    <div ref="SearchRef" class="base-list-container__search">
+    <div class="base-list-container__search">
       <slot />
     </div>
-    <div v-if="notes" ref="notesRef" class="base-list-container__notes">{{ notes }}</div>
+    <div v-if="notes" class="base-list-container__notes">{{ notes }}</div>
     <div :class="['base-list-container__table', props.isPage ? '' : 'not-page']">
-      <ElTable
-        :key="timestamp"
-        :data="props.listData"
-        stripe
-        row-key="id"
-        header-cell-class-name="table-header"
-        :height="tableHeight"
-      >
+      <ElTable :data="props.listData" stripe row-key="id" height="100%" header-cell-class-name="table-header">
         <template #empty><ElEmpty description="暂无数据" /></template>
         <ElTableColumn
           v-for="(item, index) of props.colOptions"
@@ -46,8 +39,9 @@
         </ElTableColumn>
       </ElTable>
     </div>
-    <div v-if="props.isPage" ref="PaginationRef" class="base-list-container__pagination">
+    <div v-if="props.isPage" class="base-list-container__pagination">
       <ElPagination
+        small
         background
         layout="prev, pager, next, sizes, total"
         :current-page="props.page.pageNo"
@@ -61,9 +55,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { debounce } from 'lodash';
 import type { ElTableColumn } from 'element-plus';
 import { TagProps } from 'element-plus/es/components/tag/src/tag';
 
@@ -110,36 +101,12 @@ const emit = defineEmits<{
   (event: 'pageChange', page: Omit<IPage, 'total'>): void;
 }>();
 
-const SearchRef = ref<HTMLElement>();
-const notesRef = ref<HTMLElement>();
-
-const PaginationRef = ref<HTMLElement>();
 const onPageSizeChange = (val: number) => {
   emit('pageChange', { pageNo: props.page.pageNo, pageSize: val });
 };
 const onPageNoChange = (val: number) => {
   emit('pageChange', { pageNo: val, pageSize: props.page.pageSize });
 };
-const timestamp = ref();
-const tableHeight = ref<number>(0);
-
-// 动态设置table height
-const onWindowResize = debounce(() => {
-  const mainHeight = document.getElementById('mainContainer')?.offsetHeight || 0;
-  const pageNavHeight = document.getElementById('pageNav')?.offsetHeight || 0;
-  const searchHeight = SearchRef.value?.offsetHeight || 0;
-  const notesHeight = notesRef.value?.offsetHeight || 0;
-  const paginationHeight = PaginationRef.value?.offsetHeight || 0;
-  tableHeight.value = mainHeight - pageNavHeight - searchHeight - notesHeight - paginationHeight - 10; // body-container__wrap padding-bottom=10
-  timestamp.value = new Date().getTime();
-}, 200);
-onMounted(() => {
-  onWindowResize();
-  window.addEventListener('resize', onWindowResize);
-});
-onUnmounted(() => {
-  window.removeEventListener('resize', onWindowResize);
-});
 </script>
 
 <style lang="scss">
@@ -147,26 +114,30 @@ onUnmounted(() => {
 @import '../styles/mixin.scss';
 
 .base-list-container {
+  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  padding: 20px 20px 16px;
   background: #fff;
-  padding: 0 20px;
 
   .base-list-container__search {
     flex: 0 0 auto;
-    padding: 20px 0;
+    padding-bottom: 16px;
   }
   .base-list-container__notes {
+    flex: 0 0 auto;
     color: var(--el-text-color-placeholder);
     padding-bottom: 4px;
     font-size: 12px;
   }
   .base-list-container__table {
+    flex: 1 1 0;
+    height: 0;
+    min-height: 100px;
     .table-header {
       background: #f8f8fa;
     }
-    flex: 1;
     .base-list-container__table_cell_empty {
       color: $secondaty-text;
     }
@@ -176,7 +147,7 @@ onUnmounted(() => {
   }
   .base-list-container__pagination {
     flex: 0 0 auto;
-    padding: 20px 0;
+    padding-top: 16px;
     .el-pagination__sizes {
       margin-left: 16px;
     }

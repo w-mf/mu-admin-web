@@ -35,7 +35,6 @@ import { ApiAuthEncryptionPost } from '~/api/Auth';
 import DialogFormContents from './DialogFormContents.vue';
 
 type ListItem = ApiSystemAccountGetResponse['list'][number];
-
 const listData = ref<ListItem[]>([]);
 const pageParams = reactive<Omit<ApiSystemAccountGetResponse, 'list'>>({
   pageNo: 1,
