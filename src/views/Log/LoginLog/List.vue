@@ -1,5 +1,6 @@
 <template>
   <BaseListContainer
+    :loading="loading"
     :list-data="listData"
     :page="pageParams"
     :col-options="colOptions"
@@ -19,6 +20,7 @@ import dayjs from 'dayjs';
 type ListItem = ApiLogLoginLogGetResponse['list'][number];
 type QueryField = keyof ApiLogLoginLogGetRequest;
 
+const loading = ref<boolean>(true);
 const listData = ref<ListItem[]>([]);
 const pageParams = reactive<Omit<ApiLogLoginLogGetResponse, 'list'>>({
   pageNo: 1,
@@ -26,10 +28,16 @@ const pageParams = reactive<Omit<ApiLogLoginLogGetResponse, 'list'>>({
   total: 0,
 });
 async function getData(query = {}) {
-  const { pageNo, pageSize } = pageParams;
-  const res = await ApiLogLoginLogGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}`, ...query });
-  listData.value = res.list || [];
-  pageParams.total = res.total;
+  loading.value = true;
+  try {
+    const { pageNo, pageSize } = pageParams;
+    const res = await ApiLogLoginLogGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}`, ...query });
+    listData.value = res.list || [];
+    pageParams.total = res.total;
+  } catch (e) {
+    //
+  }
+  loading.value = false;
 }
 
 const colOptions = reactive<IColOption<ListItem>[]>([

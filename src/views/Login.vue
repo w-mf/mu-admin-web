@@ -42,8 +42,8 @@ const appStore = useAppStore();
 const router = useRouter();
 const formRef = ref<FormInstance>();
 const form = reactive({
-  userName: '',
-  password: '',
+  userName: 'admin',
+  password: '123456',
   imgVerifyCodeUuid: '',
   imgVerifyCodeValue: '',
 });

@@ -49,8 +49,12 @@ const router = createRouter({
 });
 router.beforeEach((to) => {
   const navTabsStore = useNavTabsStore();
-  navTabsStore.onAddNavTab({ text: (to.meta.title as string) || '', path: to.path });
-  navTabsStore.setActiveTab(to.path);
+  // navTab 忽略路由的路由
+  const ignorePath = ['/login'];
+  if (!ignorePath.includes(to.path)) {
+    navTabsStore.onAddNavTab({ text: (to.meta.title as string) || '', path: to.path });
+    navTabsStore.setActiveTab(to.path);
+  }
   nProgress.start();
 });
 router.afterEach(() => {

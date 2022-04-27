@@ -1,5 +1,5 @@
 <template>
-  <BaseListContainer :list-data="listData" :page="pageParams" :col-options="colOptions">
+  <BaseListContainer :list-data="listData" :loading="loading" :page="pageParams" :col-options="colOptions">
     <div>
       <ElButton type="primary" @click="showDialog = true">新增</ElButton>
     </div>
@@ -36,6 +36,7 @@ import DialogFormContents from './DialogFormContents.vue';
 
 type ListItem = ApiSystemAccountGetResponse['list'][number];
 const listData = ref<ListItem[]>([]);
+const loading = ref<boolean>(true);
 const pageParams = reactive<Omit<ApiSystemAccountGetResponse, 'list'>>({
   pageNo: 1,
   pageSize: 20,
@@ -43,9 +44,15 @@ const pageParams = reactive<Omit<ApiSystemAccountGetResponse, 'list'>>({
 });
 async function getData() {
   const { pageNo, pageSize } = pageParams;
-  const res = await ApiSystemAccountGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}` });
-  listData.value = res.list || [];
-  pageParams.total = res.total;
+  loading.value = true;
+  try {
+    const res = await ApiSystemAccountGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}` });
+    listData.value = res.list || [];
+    pageParams.total = res.total;
+  } catch (e) {
+    //
+  }
+  loading.value = false;
 }
 
 const editId = ref<number | undefined>(); // 编辑情况下 列表项的id。用于编辑状态判断、请求

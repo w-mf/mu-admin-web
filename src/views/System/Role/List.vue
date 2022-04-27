@@ -1,5 +1,5 @@
 <template>
-  <BaseListContainer :list-data="listData" :page="pageParams" :col-options="colOptions">
+  <BaseListContainer :list-data="listData" :loading="loading" :page="pageParams" :col-options="colOptions">
     <div>
       <ElButton type="primary" @click="showDialog = true">新增</ElButton>
     </div>
@@ -34,6 +34,7 @@ import DialogFormContents from './DialogFormContents.vue';
 
 type ListItem = ApiSystemRoleGetResponse['list'][number];
 
+const loading = ref<boolean>(true);
 const listData = ref<ListItem[]>([]);
 const pageParams = reactive<Omit<ApiSystemRoleGetResponse, 'list'>>({
   pageNo: 1,
@@ -41,10 +42,16 @@ const pageParams = reactive<Omit<ApiSystemRoleGetResponse, 'list'>>({
   total: 0,
 });
 async function getData() {
-  const { pageNo, pageSize } = pageParams;
-  const res = await ApiSystemRoleGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}` });
-  listData.value = res.list || [];
-  pageParams.total = res.total;
+  loading.value = true;
+  try {
+    const { pageNo, pageSize } = pageParams;
+    const res = await ApiSystemRoleGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}` });
+    listData.value = res.list || [];
+    pageParams.total = res.total;
+  } catch (e) {
+    //
+  }
+  loading.value = false;
 }
 
 const editId = ref<number | undefined>(); // 编辑情况下 列表项的id。用于编辑状态判断、请求

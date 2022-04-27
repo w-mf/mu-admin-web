@@ -5,8 +5,15 @@
     </div>
     <div v-if="notes" class="base-list-container__notes">{{ notes }}</div>
     <div :class="['base-list-container__table', props.isPage ? '' : 'not-page']">
-      <ElTable :data="props.listData" stripe row-key="id" height="100%" header-cell-class-name="table-header">
-        <template #empty><ElEmpty description="暂无数据" /></template>
+      <ElTable
+        v-loading="loading"
+        :data="props.listData"
+        stripe
+        row-key="id"
+        height="100%"
+        header-cell-class-name="table-header"
+      >
+        <template #empty><ElEmpty v-show="!loading" description="暂无数据" /></template>
         <ElTableColumn
           v-for="(item, index) of props.colOptions"
           :key="item.field || index"
@@ -59,6 +66,7 @@ import type { ElTableColumn } from 'element-plus';
 import { TagProps } from 'element-plus/es/components/tag/src/tag';
 
 export interface IColOption<T> {
+  loading?: boolean;
   field?: string;
   title: string;
   width?: string | number;
@@ -79,6 +87,7 @@ export interface IPage {
 }
 const props = withDefaults(
   defineProps<{
+    loading: false;
     colOptions: IColOption<unknown>[];
     listData: unknown[];
     page?: IPage;

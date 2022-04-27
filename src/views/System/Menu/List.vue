@@ -1,5 +1,5 @@
 <template>
-  <BaseListContainer :list-data="treeData" :is-page="false" :col-options="colOptions">
+  <BaseListContainer :list-data="treeData" :loading="loading" :is-page="false" :col-options="colOptions">
     <div>
       <ElButton type="primary" @click="showDialog = true">新增</ElButton>
     </div>
@@ -33,16 +33,24 @@ import { ElMessageBox, ElMessage } from 'element-plus';
 import DialogFormContents from './DialogFormContents.vue';
 
 const treeData = ref<ApiSystemMenuTreeListGetResponse>([]);
+const loading = ref<boolean>(true);
 async function getData() {
-  const res = await ApiSystemMenuTreeListGet();
-  const sortHandle = (list: ApiSystemMenuTreeListGetResponse) => {
-    list.sort((a, b) => (a.sort || 0) - (b.sort || 0));
-    list.forEach((item) => {
-      if (item.children) sortHandle(item.children);
-    });
-  };
-  sortHandle(res);
-  treeData.value = res;
+  loading.value = true;
+  try {
+    const res = await ApiSystemMenuTreeListGet();
+    const sortHandle = (list: ApiSystemMenuTreeListGetResponse) => {
+      list.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+      list.forEach((item) => {
+        if (item.children) sortHandle(item.children);
+      });
+    };
+    sortHandle(res);
+    treeData.value = res;
+    loading.value = false;
+  } catch (e) {
+    //
+  }
+  loading.value = false;
 }
 
 const editId = ref<number | undefined>(); // 编辑情况下 列表项的id。用于编辑状态判断、请求
