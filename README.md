@@ -1,75 +1,38 @@
-# h5 模板
+# mu-admin web端
 
-一个 基于 vue3 + element-plus 的 pc 模板工程。
+一个配套[mu-admin-server](https://github.com/w-mf/mu-admin-server)服务。<br>
+基于 vue3+pinia+vite+typescript+element-plus的web端。
 
-## 特色
-
-- 使用 vite 作为构建工具， 提升开发体验。
-- SFC 中使用 script setup。
-- 集成 [阿里的前端规范（eslint、stylelist、commitlint）](https://github.com/alibaba/f2e-spec)。
-- 集成 yapi mock 及生成 ts type 能力。
-
-## 技术栈
-
-技术栈：vue3 + typescript + sass
-路由： vue-router 4
-状态库： pinia
-ui 库： element-plus
-打包器： vite (node >= 12.0.0)
+## 功能
+-[x] swagger/yapi 生成请求实例
+-[x] 集成 eslint、styleLint、prettier 规则
+----------
+- [x] 密码登录（jwt鉴权）
+- [x] 系统管理-账户管理
+- [x] 系统管理-角色管理
+- [x] 系统管理-菜单管理
+- [x] 日志管理-登录日志
+- [ ] 日志管理-操作日志
+- [ ] 服务器信息
+- [ ] 用户消息
 
 ## 兼容性
 
 Edge ≥ 79 Firefox ≥ 78 Chrome ≥ 64 Safari ≥ 12
 
-## 开发（dev）
-
-1. 初始化<br>
-   主要为安装依赖和安装 husky
+## 开始
 
 ```sh
-npm run init
-```
-
-2. 启动开发模式
-
-```sh
+# 开发
 npm run dev
-```
-
-## 校验（lint）
-
-检验所有。
-
-```sh
-npm run lint
-```
-
-只进行 eslint 校验
-eslint
-
-```sh
-npm run lint:eslint
-```
-
-只进行 stylelint 校验
-stylelint
-
-```
-npm run lint:stylelint
-```
-
-## 打包（build）
-
-1. 安装依赖
-
-```sh
-npm install
-```
-
-2. 启动打包
-
-```sh
+# 打包
 npm run build
+# 校验
+npm run lint
+# 校验并修复
+npm run lint:fix
+# 生成请求实体
+npm run api
 ```
 
 ## 预览（preview）
@@ -83,7 +46,7 @@ npm run build & npm run preview
 ## 生成 api
 
 1. 在 ytt.config.ts 文件配置 serverUrl，及项目 token。
-2. 执行 npm run api 生成 api 请求体及相应类型到 src/api 目录。
+2. 执行 `npm run api` 生成 api 请求体及相应类型到 src/api 目录。
 
 ```sh
 npm run api
@@ -102,12 +65,7 @@ mock 数据结合 yapi 平台。更改.env 的 VITE_API_MODEL 环境变量来切
 - prod: 使用线上数据。配置与 yapi 的配置环境，如遇跨域问题请使用 local 和配置代理实现代理线上数据；
 - mock: mock 数据。有 yapi 提供 mock 数据，可在 yapi 配置详细 mock 规则；
   > 只在 dev 环境生效
-
-## 规范
-
-使用阿里配套的 eslint + stylelint + commitlint 规范。
-https://github.com/alibaba/f2e-spec
-
+  
 ### git commit
 
 ```
@@ -144,5 +102,5 @@ git commit -m 'chore(package.json): 升级xxx依赖版本'
 ...
 ```
 
-# 其他
+## 其他
   Vue3.2后 Script Setup 语法引入了 defineProps、defineEmits、defineExpose、withDefaults 的编译器宏，无需手动引入
