@@ -2,7 +2,8 @@
 [缓慢开发中...]<br>
 一个配套[mu-admin-server](https://github.com/w-mf/mu-admin-server)服务。<br>
 基于 vue3+pinia+vite+typescript+element-plus的web端。
-
+## 演示地址
+http://120.76.45.44/
 ## 功能
 -[x] swagger/yapi 生成请求实例
 -[x] 集成 eslint、styleLint、prettier 规则
