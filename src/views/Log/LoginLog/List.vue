@@ -17,7 +17,7 @@ import ListSearchBar, { IColOption as SearchOpt } from '~/components/ListSearchB
 import { ApiLogLoginLogGet, ApiLogLoginLogGetResponse, ApiLogLoginLogGetRequest } from '~/api/LogLogin';
 import dayjs from 'dayjs';
 
-type ListItem = ApiLogLoginLogGetResponse['list'][number];
+type ListItem = ApiLogLoginLogGetResponse['list'][0];
 type QueryField = keyof ApiLogLoginLogGetRequest;
 
 const loading = ref<boolean>(true);

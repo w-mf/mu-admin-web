@@ -1,5 +1,5 @@
 # mu-admin web端
-
+[缓慢开发中...]<br>
 一个配套[mu-admin-server](https://github.com/w-mf/mu-admin-server)服务。<br>
 基于 vue3+pinia+vite+typescript+element-plus的web端。
 

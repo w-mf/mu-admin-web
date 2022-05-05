@@ -22,7 +22,7 @@
       <ElSwitch
         v-model="formData.status"
         inline-prompt
-        width="56"
+        :width="56"
         active-text="正常"
         :active-value="BOOLEAN_ENUM.TRUE"
         inactive-text="停用"

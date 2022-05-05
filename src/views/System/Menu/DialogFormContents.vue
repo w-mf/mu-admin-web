@@ -8,7 +8,7 @@
         :props="{
           label: 'name',
           value: 'id',
-          expandTrigger: 'hover',
+          expandTrigger: ExpandTrigger.HOVER,
           checkStrictly: true,
           emitPath: false,
         }"
@@ -30,7 +30,7 @@
       <ElSwitch
         v-model="formData.show"
         inline-prompt
-        width="56"
+        :width="56"
         active-text="显示"
         :active-value="BOOLEAN_ENUM.TRUE"
         inactive-text="隐藏"
@@ -56,8 +56,8 @@ import {
 } from '~/api/SysMenu';
 import { reactive, ref, onMounted } from 'vue';
 import { BOOLEAN_ENUM } from '~/constant/map';
+import { ExpandTrigger, ElMessage, FormRules } from 'element-plus';
 import type { FormInstance } from 'element-plus';
-import { ElMessage } from 'element-plus';
 import { TYPE_ENUM } from './menu.enum';
 import { TYPE } from './menu.constant';
 
@@ -72,7 +72,7 @@ async function getMenuTreeData() {
   menuTreeData.value = await ApiSystemMenuTreeListGet();
 }
 const ruleFormRef = ref<FormInstance>();
-const rules = reactive({
+const rules = reactive<FormRules>({
   type: [{ required: true, message: '请选择类型', trigger: 'change' }],
   name: [
     { required: true, message: '请输入名称', trigger: 'change' },

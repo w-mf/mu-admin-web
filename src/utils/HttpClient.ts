@@ -39,7 +39,7 @@ yttHttpClientInstance.interceptors.response.use(
     nProgress.done();
     return Promise.resolve(response.data);
   },
-  (error: AxiosError) => {
+  (error: AxiosError<{ message?: string }>) => {
     const { response } = error;
     const router = useRouter();
     switch (response?.status) {
@@ -62,11 +62,11 @@ yttHttpClientInstance.interceptors.response.use(
         });
         break;
       case 400: // 验证失败
-        if (error.response?.data?.message) {
-          if (Array.isArray(error.response.data.message)) ElMessage.error(error.response.data.message[0]);
-          else ElMessage.error(error.response.data.message);
+        if (response?.data?.message) {
+          if (Array.isArray(response?.data.message)) ElMessage.error(response?.data.message[0]);
+          else ElMessage.error(response?.data.message);
         } else {
-          ElMessage.error(`${error.response?.status} 校验失败`);
+          ElMessage.error(`${response?.status} 校验失败`);
         }
         break;
       default:

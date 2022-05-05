@@ -24,7 +24,7 @@
       <ElSwitch
         v-model="formData.status"
         inline-prompt
-        width="56"
+        :width="56"
         active-text="正常"
         :active-value="BOOLEAN_ENUM.TRUE"
         inactive-text="停用"
@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted } from 'vue';
 import { BOOLEAN_ENUM } from '~/constant/map';
-import type { FormInstance } from 'element-plus';
+import type { FormInstance, FormRules } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { ApiSystemAccountPostRequest, ApiSystemAccountIdGet } from '~/api/SysAccount';
 import { ApiSystemRoleSimpleListGet, ApiSystemRoleSimpleListGetResponse } from '~/api/SysRole';
@@ -56,7 +56,7 @@ const emits = defineEmits<{
 }>();
 
 const ruleFormRef = ref<FormInstance>();
-const rules = reactive({
+const rules = reactive<FormRules>({
   userName: [
     { required: true, message: '请输入用户名', trigger: 'change' },
     { max: 64, message: '用户名长度不能超过64位', trigger: 'change' },

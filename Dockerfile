@@ -1,5 +1,4 @@
 FROM node:16.14.2 as builder
-ENV NODE_ENV production
 WORKDIR /usr/app/mu-admin-web/
 # package 及 *.lock 没有变更时 可以缓存 install 结果
 COPY package*.json .npmrc ./

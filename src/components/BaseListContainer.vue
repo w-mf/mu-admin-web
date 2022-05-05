@@ -23,8 +23,8 @@
           :width="item.width"
         >
           <template v-if="item.field">
-            <ElTag v-if="item.type === 'tag'" :type="item.tagMenu[row[item.field]].type || ''">{{
-              item.tagMenu[row[item.field]].text || ''
+            <ElTag v-if="item.type === 'tag'" :type="(item.tagMenu && item.tagMenu[row[item.field]].type) || ''">{{
+              (item.tagMenu && item.tagMenu[row[item.field]].text) || ''
             }}</ElTag>
 
             <template v-else-if="(item.formatter && item.formatter(row[item.field])) || row[item.field]">
@@ -87,8 +87,8 @@ export interface IPage {
 }
 const props = withDefaults(
   defineProps<{
-    loading: false;
-    colOptions: IColOption<unknown>[];
+    loading: boolean;
+    colOptions: IColOption<any>[];
     listData: unknown[];
     page?: IPage;
     isPage?: boolean;

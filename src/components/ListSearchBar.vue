@@ -9,7 +9,7 @@
         clearable
         :placeholder="item.placeholder"
       >
-        <el-option v-for="i of item.opt" :key="i.value" :label="i.label" :value="i.value" />
+        <el-option v-for="(i, index) of item.opt" :key="`${i.value}_${index}`" :label="i.label" :value="i.value" />
       </el-select>
 
       <el-date-picker
@@ -18,7 +18,7 @@
         :placeholder="item.placeholder"
         type="date"
         value-format="YYYY-MM-DD"
-        :disabled-date="(v) => new Date(v).getTime() > Date.now()"
+        :disabled-date="disabledDate"
       />
     </el-form-item>
     <el-form-item>
@@ -40,7 +40,7 @@ export interface IColOption<T> {
 
 const props = withDefaults(
   defineProps<{
-    colOptions: IColOption<unknown>[];
+    colOptions: IColOption<string>[];
   }>(),
   {
     colOptions: () => [],
@@ -48,14 +48,16 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-  (event: 'search', form: { [key: string]: undefined }): void;
+  (event: 'search', form: any): void;
 }>();
 const form = ref({});
 
 function onSearch() {
   emit('search', form.value);
 }
-
+function disabledDate(v: string) {
+  return new Date(v).getTime() > Date.now();
+}
 onMounted(() => {
   // 表单初始值
   const obj: { [key: string]: undefined } = {};

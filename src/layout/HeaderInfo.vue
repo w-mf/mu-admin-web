@@ -5,7 +5,7 @@
       <template #default>
         <div class="header-info__user">
           <ElAvatar :size="32" :icon="Avatar" />
-          <div class="header-info__user_name">{{ userInfo.userName }}</div>
+          <div class="header-info__user_name">{{ userInfo && userInfo.userName }}</div>
           <ElIcon class="header-info__user_icon"><CaretBottom /></ElIcon>
         </div>
       </template>

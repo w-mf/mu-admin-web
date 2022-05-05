@@ -48,7 +48,7 @@ export interface ApiSystemRolePostRequest {
   /**
    * 状态。1:正常，0: 停用
    */
-  status: {};
+  status: 1 | 0;
   /**
    * 菜单权限id。多个用,分隔
    */
