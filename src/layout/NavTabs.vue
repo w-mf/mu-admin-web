@@ -20,8 +20,18 @@
       <ElIcon @click="scrollRightHandle"><DArrowRight /></ElIcon>
     </div>
     <div class="nav-tabs__more">
-      <ElIcon><Refresh /></ElIcon>
-      <ElIcon><ArrowDown /></ElIcon>
+      <ElIcon @click="refreshHandle"><Refresh /></ElIcon>
+      <ElDropdown trigger="click" @command="otherDropDownSelectHandle">
+        <ElIcon><ArrowDown /></ElIcon>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item :command="DROPDOWN_COMMAND.OTHER">关闭其他</el-dropdown-item>
+            <el-dropdown-item :command="DROPDOWN_COMMAND.LEFT" divided>关闭左边</el-dropdown-item>
+            <el-dropdown-item :command="DROPDOWN_COMMAND.RIGHT" divided>关闭右边</el-dropdown-item>
+            <el-dropdown-item :command="DROPDOWN_COMMAND.ALL" divided>关闭所有</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </ElDropdown>
     </div>
   </div>
 </template>
@@ -32,6 +42,12 @@ import { ArrowDown, CircleClose, DArrowLeft, DArrowRight, Refresh } from '@eleme
 import { useNavTabsStore } from '~/stores/navTabs';
 import { useRouter } from 'vue-router';
 
+enum DROPDOWN_COMMAND {
+  OTHER = 'other',
+  LEFT = 'left',
+  RIGHT = 'right',
+  ALL = 'all',
+}
 const step = 200;
 const navTabsStore = useNavTabsStore();
 const router = useRouter();
@@ -73,6 +89,36 @@ function delHandle(path: string, index: number) {
   } else {
     router.replace('/home');
   }
+}
+function refreshHandle() {
+  router.go(0);
+}
+function otherDropDownSelectHandle(val: DROPDOWN_COMMAND) {
+  let path: string[] = [];
+  const activeIndex = navTabs.value.findIndex((item) => item.path === activePath.value);
+  switch (val) {
+    case DROPDOWN_COMMAND.OTHER:
+      path = navTabs.value.filter((item) => item.path !== activePath.value).map((item) => item.path);
+      break;
+    case DROPDOWN_COMMAND.LEFT:
+      path =
+        activeIndex > -1
+          ? (path = navTabs.value.filter((item, index) => index < activeIndex).map((item) => item.path))
+          : [];
+      break;
+    case DROPDOWN_COMMAND.RIGHT:
+      path =
+        activeIndex > -1
+          ? (path = navTabs.value.filter((item, index) => index > activeIndex).map((item) => item.path))
+          : navTabs.value.map((item) => item.path);
+      break;
+    case DROPDOWN_COMMAND.ALL:
+      path = navTabs.value.map((item) => item.path);
+      router.replace('/home');
+      break;
+    default:
+  }
+  navTabsStore.onDelNavTab(path);
 }
 </script>
 
