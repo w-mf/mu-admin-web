@@ -6,51 +6,50 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
-const proxyUrl = loadEnv('', './').VITE_API_PROXY_URL;
-const proxy = proxyUrl
-  ? {
-      '/api': {
-        target: proxyUrl,
-        changeOrigin: true,
-      },
-    }
-  : undefined;
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: './',
-  css: {
-    preprocessorOptions: {
-      scss: {
-        charset: false,
+export default ({ mode }: { mode: string }) =>
+  defineConfig({
+    base: loadEnv(mode, process.cwd()).NODE_NEV === 'development' ? './' : '/',
+    css: {
+      preprocessorOptions: {
+        scss: {
+          charset: false,
+        },
       },
     },
-  },
-  server: {
-    host: '127.0.0.1',
-    port: 3333,
-    open: true,
-    proxy,
-  },
-  resolve: {
-    alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
+    server: {
+      host: '127.0.0.1',
+      port: 3333,
+      open: true,
+      proxy: loadEnv(mode, process.cwd()).VITE_API_PROXY_URL
+        ? {
+            '/api': {
+              target: loadEnv(mode, process.cwd()).VITE_API_PROXY_URL,
+              changeOrigin: true,
+            },
+          }
+        : undefined,
     },
-    extensions: ['.js', '.ts', '.vue', '.json'],
-  },
-  plugins: [
-    vue(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      dts: true,
-      types: [
-        {
-          from: 'vue-router',
-          names: ['RouterLink', 'RouterView'],
-        },
-      ],
-      resolvers: [ElementPlusResolver()],
-    }),
-  ],
-});
+    resolve: {
+      alias: {
+        '~/': `${path.resolve(__dirname, 'src')}/`,
+      },
+      extensions: ['.js', '.ts', '.vue', '.json'],
+    },
+    plugins: [
+      vue(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()],
+      }),
+      Components({
+        dts: true,
+        types: [
+          {
+            from: 'vue-router',
+            names: ['RouterLink', 'RouterView'],
+          },
+        ],
+        resolvers: [ElementPlusResolver()],
+      }),
+    ],
+  });
