@@ -1,7 +1,7 @@
 <template>
   <BaseListContainer :list-data="treeData" :loading="loading" :is-page="false" :col-options="colOptions">
     <div>
-      <ElButton type="primary" @click="showDialog = true">新增</ElButton>
+      <ElButton plain type="primary" @click="showDialog = true">新增</ElButton>
     </div>
   </BaseListContainer>
   <ElDialog
