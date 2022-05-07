@@ -27,11 +27,12 @@ const pageParams = reactive<Omit<ApiLogLoginLogGetResponse, 'list'>>({
   pageSize: 20,
   total: 0,
 });
-async function getData(query = {}) {
+const query = ref<Omit<ApiLogLoginLogGetRequest, 'pageNo' | 'pageSize'>>();
+async function getData() {
   loading.value = true;
   try {
     const { pageNo, pageSize } = pageParams;
-    const res = await ApiLogLoginLogGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}`, ...query });
+    const res = await ApiLogLoginLogGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}`, ...(query.value || {}) });
     listData.value = res.list || [];
     pageParams.total = res.total;
   } catch (e) {
@@ -104,9 +105,10 @@ const searchOpt = reactive<SearchOpt<QueryField>[]>([
     type: 'date',
   },
 ]);
-function searchHandle(values: { [key in QueryField]: number | string | boolean }) {
+function searchHandle(values: Omit<ApiLogLoginLogGetRequest, 'pageNo' | 'pageSize'>) {
   pageParams.pageNo = 1;
-  getData(values);
+  query.value = values;
+  getData();
 }
 onMounted(() => {
   getData();

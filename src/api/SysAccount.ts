@@ -194,6 +194,22 @@ export interface ApiSystemAccountGetRequest {
    * 每页大小
    */
   pageSize: string;
+  /**
+   * 状态。1:正常，0: 停用'
+   */
+  status?: string;
+  /**
+   * 用户名
+   */
+  userName?: string;
+  /**
+   * 姓名
+   */
+  name?: string;
+  /**
+   * 手机号
+   */
+  mobile?: string;
 }
 
 /**
@@ -287,7 +303,7 @@ type ApiSystemAccountGetRequestConfig = Readonly<
     '/api/system/account',
     'data',
     string,
-    'pageNo' | 'pageSize',
+    'pageNo' | 'pageSize' | 'status' | 'userName' | 'name' | 'mobile',
     false
   >
 >;
@@ -308,7 +324,7 @@ const apiSystemAccountGetRequestConfig: ApiSystemAccountGetRequestConfig = /*#__
   responseBodyType: ResponseBodyType.json,
   dataKey: dataKey_0_0_0_1,
   paramNames: [],
-  queryNames: ['pageNo', 'pageSize'],
+  queryNames: ['pageNo', 'pageSize', 'status', 'userName', 'name', 'mobile'],
   requestDataOptional: false,
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},

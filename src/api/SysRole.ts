@@ -38,6 +38,10 @@ const dataKey_0_0_0_2 = 'data' as any;
  */
 export interface ApiSystemRolePostRequest {
   /**
+   * 状态。1:正常，0: 停用
+   */
+  status: 1 | 0;
+  /**
    * 角色名称
    */
   name: string;
@@ -45,10 +49,6 @@ export interface ApiSystemRolePostRequest {
    * 备注
    */
   remark?: string;
-  /**
-   * 状态。1:正常，0: 停用
-   */
-  status: 1 | 0;
   /**
    * 菜单权限id。多个用,分隔
    */
@@ -153,6 +153,14 @@ export interface ApiSystemRoleGetRequest {
    * 每页大小
    */
   pageSize: string;
+  /**
+   * 状态。1:正常，0: 停用
+   */
+  status?: string;
+  /**
+   * 角色名称
+   */
+  name?: string;
 }
 
 /**
@@ -221,7 +229,7 @@ type ApiSystemRoleGetRequestConfig = Readonly<
     '/api/system/role',
     'data',
     string,
-    'pageNo' | 'pageSize',
+    'pageNo' | 'pageSize' | 'status' | 'name',
     false
   >
 >;
@@ -242,7 +250,7 @@ const apiSystemRoleGetRequestConfig: ApiSystemRoleGetRequestConfig = /*#__PURE__
   responseBodyType: ResponseBodyType.json,
   dataKey: dataKey_0_0_0_2,
   paramNames: [],
-  queryNames: ['pageNo', 'pageSize'],
+  queryNames: ['pageNo', 'pageSize', 'status', 'name'],
   requestDataOptional: false,
   requestDataJsonSchema: {},
   responseDataJsonSchema: {},

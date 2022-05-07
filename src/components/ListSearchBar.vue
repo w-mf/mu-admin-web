@@ -1,13 +1,20 @@
 <template>
   <el-form :inline="true" :model="form" class="list-search-bar">
     <el-form-item v-for="(item, index) of props.colOptions" :key="index" :label="item.label" @keyup.enter="onSearch">
-      <el-input v-if="item.type === 'input'" v-model="form[item.field]" :placeholder="item.placeholder" />
+      <el-input
+        v-if="item.type === 'input'"
+        v-model="form[item.field]"
+        clearable
+        :placeholder="item.placeholder"
+        style="width: 180px"
+      />
 
       <el-select
         v-else-if="item.type === 'select'"
         v-model="form[item.field]"
         clearable
         :placeholder="item.placeholder"
+        style="width: 180px"
       >
         <el-option v-for="(i, index) of item.opt" :key="`${i.value}_${index}`" :label="i.label" :value="i.value" />
       </el-select>
@@ -16,6 +23,7 @@
         v-else-if="item.type === 'date'"
         v-model="form[item.field]"
         :placeholder="item.placeholder"
+        clearable
         type="date"
         value-format="YYYY-MM-DD"
         :disabled-date="disabledDate"

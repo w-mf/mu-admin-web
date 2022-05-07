@@ -15,7 +15,7 @@ export const logRoutes: IRoute[] = [
     children: [
       {
         path: '/log/login-log',
-        component: () => import('~/views/Log/LoginLog/List.vue'),
+        component: () => import('~/views/Log/LoginLog/LoginLogList.vue'),
         meta: {
           isMenu: true,
           permissionCode: 'log:login:list',

@@ -1,7 +1,8 @@
 <template>
   <BaseListContainer :list-data="listData" :loading="loading" :page="pageParams" :col-options="colOptions">
-    <div>
-      <ElButton type="primary" @click="showDialog = true">新增</ElButton>
+    <ListSearchBar :col-options="searchOpt" @search="searchHandle" />
+    <div style="margin-top: 18px">
+      <ElButton plain type="primary" @click="showDialog = true">新增</ElButton>
     </div>
   </BaseListContainer>
   <ElDialog
@@ -20,33 +21,54 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive } from 'vue';
 import BaseListContainer, { IColOption } from '~/components/BaseListContainer.vue';
+import {
+  ApiSystemRoleGetResponse,
+  ApiSystemRoleGet,
+  ApiSystemRolePostRequest,
+  ApiSystemRoleIdPatch,
+  ApiSystemRolePost,
+  ApiSystemRoleIdDelete,
+  ApiSystemRoleGetRequest,
+} from '~/api/SysRole';
 import dayjs from 'dayjs';
 import { ElMessageBox, ElMessage } from 'element-plus';
-import {
-  ApiSystemAccountGet,
-  ApiSystemAccountIdPatch,
-  ApiSystemAccountPost,
-  ApiSystemAccountIdDelete,
-  ApiSystemAccountPostRequest,
-  ApiSystemAccountGetResponse,
-  ApiSystemAccountIdResetPasswordPost,
-} from '~/api/SysAccount';
-import { ApiAuthEncryptionPost } from '~/api/Auth';
+import ListSearchBar, { IColOption as SearchOpt } from '~/components/ListSearchBar.vue';
 import DialogFormContents from './DialogFormContents.vue';
 
-type ListItem = ApiSystemAccountGetResponse['list'][number];
-const listData = ref<ListItem[]>([]);
+type ListItem = ApiSystemRoleGetResponse['list'][number];
+
+type QueryField = keyof Omit<ApiSystemRoleGetRequest, 'pageSize' | 'pageNo'>;
+const query = ref<Omit<ApiSystemRoleGetRequest, 'pageSize' | 'pageNo'>>();
+const searchOpt = reactive<SearchOpt<QueryField>[]>([
+  {
+    field: 'name',
+    label: '名称',
+    placeholder: '角色名称',
+    type: 'input',
+  },
+  {
+    field: 'status',
+    label: '状态',
+    placeholder: '角色状态',
+    type: 'select',
+    opt: [
+      { value: 1, label: '正常' },
+      { value: 0, label: '停用' },
+    ],
+  },
+]);
 const loading = ref<boolean>(true);
-const pageParams = reactive<Omit<ApiSystemAccountGetResponse, 'list'>>({
+const listData = ref<ListItem[]>([]);
+const pageParams = reactive<Omit<ApiSystemRoleGetResponse, 'list'>>({
   pageNo: 1,
   pageSize: 20,
   total: 0,
 });
 async function getData() {
-  const { pageNo, pageSize } = pageParams;
   loading.value = true;
   try {
-    const res = await ApiSystemAccountGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}` });
+    const { pageNo, pageSize } = pageParams;
+    const res = await ApiSystemRoleGet({ pageNo: `${pageNo}`, pageSize: `${pageSize}`, ...(query.value || {}) });
     listData.value = res.list || [];
     pageParams.total = res.total;
   } catch (e) {
@@ -54,20 +76,24 @@ async function getData() {
   }
   loading.value = false;
 }
-
+function searchHandle(values: Omit<ApiSystemRoleGetRequest, 'pageSize' | 'pageNo'>) {
+  pageParams.pageNo = 1;
+  query.value = values;
+  getData();
+}
 const editId = ref<number | undefined>(); // 编辑情况下 列表项的id。用于编辑状态判断、请求
 const showDialog = ref<boolean>(false);
 function closeDialog() {
   editId.value = undefined;
   showDialog.value = false;
 }
-async function submitHandle(data: ApiSystemAccountPostRequest) {
+async function submitHandle(data: ApiSystemRolePostRequest) {
   console.log(data);
   if (editId.value) {
-    await ApiSystemAccountIdPatch({ id: `${editId.value}`, ...data });
+    await ApiSystemRoleIdPatch({ id: `${editId.value}`, ...data });
     ElMessage.success('更新成功');
   } else {
-    await ApiSystemAccountPost(data);
+    await ApiSystemRolePost(data);
     ElMessage.success('添加成功');
   }
   closeDialog();
@@ -83,56 +109,20 @@ function delHandle(data: ListItem) {
     type: 'warning',
     confirmButtonText: '删除',
   }).then(async () => {
-    await ApiSystemAccountIdDelete({ id: `${data.id}` });
+    await ApiSystemRoleIdDelete({ id: `${data.id}` });
     ElMessage.success('删除成功！');
     await getData();
-  });
-}
-function resetPassword(data: ListItem) {
-  ElMessageBox.prompt('重置当前用户密码。', '重置密码', {
-    closeOnClickModal: false,
-    inputPlaceholder: '默认密码为123456',
-    inputValidator: (value: string) => {
-      if (value && (value.length < 6 || value.length > 16)) return '密码长度应在[6,16]之间';
-      return true;
-    },
-  }).then(async (res) => {
-    if (res.action !== 'confirm') return;
-    try {
-      const password = res.value && (await ApiAuthEncryptionPost({ str: res.value }));
-      await ApiSystemAccountIdResetPasswordPost({ id: `${data.id}`, password });
-      ElMessage.success('重置成功！');
-    } catch (e) {
-      ElMessage.error('重置失败！');
-    }
   });
 }
 
 const colOptions = reactive<IColOption<ListItem>[]>([
   {
-    field: 'userName',
-    title: '用户名',
-  },
-  {
     field: 'name',
-    title: '姓名',
+    title: '名称',
   },
   {
-    field: 'nickname',
-    title: '昵称',
-  },
-  {
-    field: 'email',
-    title: '邮箱',
-  },
-  {
-    field: 'mobile',
-    title: '手机号',
-    width: 120,
-  },
-  {
-    field: 'roleNames',
-    title: '角色',
+    field: 'remark',
+    title: '备注',
   },
   {
     field: 'status',
@@ -154,14 +144,8 @@ const colOptions = reactive<IColOption<ListItem>[]>([
   },
   {
     title: '操作',
-    width: 200,
+    width: 140,
     items: [
-      {
-        type: 'button',
-        label: '重置密码',
-        opts: {},
-        onClick: resetPassword,
-      },
       {
         type: 'button',
         label: '修改',

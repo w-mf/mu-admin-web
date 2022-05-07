@@ -15,7 +15,7 @@ export const systemRoutes: IRoute[] = [
     children: [
       {
         path: '/system/account',
-        component: () => import('~/views/System/Account/List.vue'),
+        component: () => import('~/views/System/Account/AccountList.vue'),
         meta: {
           isMenu: true,
           permissionCode: 'sys:account:list',
@@ -24,7 +24,7 @@ export const systemRoutes: IRoute[] = [
       },
       {
         path: '/system/role',
-        component: () => import('~/views/System/Role/List.vue'),
+        component: () => import('~/views/System/Role/RoleList.vue'),
         meta: {
           isMenu: true,
           permissionCode: 'sys:role:list',
@@ -33,7 +33,7 @@ export const systemRoutes: IRoute[] = [
       },
       {
         path: '/system/menu',
-        component: () => import('~/views/System/Menu/List.vue'),
+        component: () => import('~/views/System/Menu/MenuList.vue'),
         meta: {
           isMenu: true,
           permissionCode: 'sys:menu:list',
